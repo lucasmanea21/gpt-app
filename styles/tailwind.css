@@ -1,0 +1,21 @@
+/* SIDEBAR */
+.sidebar {
+  @apply absolute bottom-0 left-0 flex flex-row justify-between w-full md:flex-col md:px-4 py-4 md:py-10 bg-gray-800 z-40 items-center h-[72px] md:h-screen md:w-[250px];
+}
+
+.tab {
+  @apply md:h-screen;
+}
+
+.btn {
+  @apply text-sm rounded-xl items-center py-[5px] px-3 cursor-pointer;
+}
+
+.btn.filled,
+.btn-primary {
+  @apply text-white;
+  background-image: linear-gradient(120deg, #3265e9 0%, #2200e0 99%);
+  background-size: 200% auto;
+  transition: 0.5s;
+  border: none !important;
+}
