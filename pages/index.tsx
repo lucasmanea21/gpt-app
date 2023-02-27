@@ -5,15 +5,66 @@ import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 import Profile from "../components/Profile/Profile";
-import Navbar from "../components/Navbar";
-import { supabase } from "./api/supabase-client";
+import Navbar from "../components/navbar";
+import { createQuiz, supabase } from "./api/supabase-client";
 import { useAtom } from "jotai";
 import { userInfoAtom, userSessionAtom } from "../store/atom";
 import useGetUserData from "../hooks/useGetUserData";
 import Chat from "../components/Chat";
+import { Quiz } from "../types";
 
 const Home: NextPage = () => {
+  const [userInfo, setUserInfo] = useAtom(userInfoAtom);
+
   useGetUserData();
+
+  console.log("userInfo", userInfo);
+
+  const handleCreateQuiz = async (userId: any) => {
+    const quiz: Quiz = {
+      questions: [
+        {
+          question: "Ex sunt cupidatat veniam sint excepteur enim incididunt?",
+          options: [
+            "Exercitation laborum laborum laborum",
+            "Qui ut fugiat ad proident minim veniam duis consectetur ea ex ut dolore",
+            "Cupidatat officia do id eiusmod dolore nulla irure exercitation est cupidatat consectetur.",
+            "Anim ullamco minim nostrud tempor in velit excepteur et veniam culpa minim ad quis ad.",
+          ],
+          answer: "c",
+        },
+        {
+          question: "Ex sunt cupidatat veniam sint excepteur enim incididunt?",
+          options: [
+            "Exercitation laborum laborum laborum",
+            "Qui ut fugiat ad proident minim veniam duis consectetur ea ex ut dolore",
+            "Cupidatat officia do id eiusmod dolore nulla irure exercitation est cupidatat consectetur.",
+            "Anim ullamco minim nostrud tempor in velit excepteur et veniam culpa minim ad quis ad.",
+          ],
+          answer: "d",
+        },
+        {
+          question: "Ex sunt cupidatat veniam sint excepteur enim incididunt?",
+          options: [
+            "Exercitation laborum laborum laborum",
+            "Qui ut fugiat ad proident minim veniam duis consectetur ea ex ut dolore",
+            "Cupidatat officia do id eiusmod dolore nulla irure exercitation est cupidatat consectetur.",
+            "Anim ullamco minim nostrud tempor in velit excepteur et veniam culpa minim ad quis ad.",
+          ],
+          answer: "a",
+        },
+      ],
+      subject: "Matematica",
+      user_id: userId,
+    };
+    const res = await createQuiz(quiz);
+
+    console.log(res);
+  };
+
+  useEffect(() => {
+    userInfo.id && handleCreateQuiz(userInfo.id);
+  }, [userInfo]);
 
   return (
     <div className={styles.container}>

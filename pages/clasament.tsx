@@ -1,21 +1,24 @@
-import { useAtom } from "jotai";
 import React from "react";
+import Leaderboard from "../components/Leaderboard";
 import Navbar from "../components/navbar";
-import Profile from "../components/Profile/Profile";
+import SectionWrapper from "../components/Wrappers";
 import useGetUserData from "../hooks/useGetUserData";
-import { userInfoAtom, userSessionAtom } from "../store/atom";
 
-const ProfilePage = () => {
+const Clasament = () => {
   useGetUserData();
 
   return (
     <div>
       <Navbar />
+      <h1>Clasament</h1>
+
       <div className="flex justify-center">
-        <Profile />
+        <SectionWrapper>
+          <Leaderboard />
+        </SectionWrapper>
       </div>
     </div>
   );
 };
 
-export default ProfilePage;
+export default Clasament;

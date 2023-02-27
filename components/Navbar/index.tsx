@@ -3,28 +3,61 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { userInfoAtom, userSessionAtom } from "../../store/atom";
 import Button from "../Button";
-import { BsFillLightbulbFill } from "react-icons/bs";
+import { BsFillLightbulbFill, BsTrophyFill } from "react-icons/bs";
+import { MdQuiz } from "react-icons/md";
+import { supabase } from "../../pages/api/supabase-client";
+import Card from "../Cards";
+import { BsStars } from "react-icons/bs";
 
 const Navigation = () => {
   const Item = ({ name, link, icon }: any) => {
     return (
-      <div className="flex items-center justify-center">
+      <div className="flex items-center w-full p-2 space-x-3 rounded-md hover:bg-slate-600">
         {icon}
-        <a href={link}>{name}</a>
+        <a href={link}>
+          <p className="text-lg">{name} </p>
+        </a>
       </div>
     );
   };
   const tabs = [
-    { name: "Home", icon: <BsFillLightbulbFill /> },
-    { name: "About", icon: <BsFillLightbulbFill /> },
-    { name: "Contact", icon: <BsFillLightbulbFill /> },
+    { name: "Home", icon: <BsFillLightbulbFill size={20} />, link: "/" },
+    { name: "Quiz", icon: <MdQuiz size={20} />, link: "/quiz/4" },
+    {
+      name: "Leaderboard",
+      icon: <BsTrophyFill size={20} />,
+      link: "/clasament",
+    },
   ];
 
   return (
-    <div className="bg-gray-700 p-10 rounded-lg space-y-3 w-2/3 justify-start items-center flex flex-col">
+    <div className="flex flex-col items-center w-full p-5 space-y-3 rounded-lg">
       {tabs.map((tab, i) => {
-        return <Item key={i} name={tab?.name} link={"/"} icon={tab?.icon} />;
+        return (
+          <Item key={i} name={tab?.name} link={tab?.link} icon={tab?.icon} />
+        );
       })}
+    </div>
+  );
+};
+
+const ProfileStats = () => {
+  const [userInfo] = useAtom(userInfoAtom);
+
+  return (
+    <div className="absolute top-[-50px] z-0 w-full justify-between space-x-2 flex p-5 pt-4 pb-10 bg-gray-900 rounded-lg">
+      <div className="flex items-center justify-center space-x-1">
+        <BsStars size={16} />
+        <p className="text-sm font-medium text-gray-200">
+          {userInfo.points ?? 0} puncte
+        </p>
+      </div>
+      <div className="flex items-center justify-center space-x-2">
+        <BsStars size={16} />
+        <p className="text-sm font-medium text-gray-200">
+          {userInfo.points ?? 0} quizuri
+        </p>
+      </div>
     </div>
   );
 };
@@ -33,13 +66,21 @@ const Profile = () => {
   const [session] = useAtom(userSessionAtom);
   const [userInfo] = useAtom(userInfoAtom);
 
+  const handleLogin = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+  };
+
+  console.log("userInfo", userInfo);
+
   console.log("session", session);
 
   return (
-    <div className="bg-gray-600 p-3 rounded-lg w-full flex items-center justify-between">
-      {session && (
+    <div className="z-10 flex items-center justify-between w-full p-5 py-2 bg-gray-600 rounded-3xl">
+      {session ? (
         <>
-          <div className="flex justify-between items-center w-full space-x-3">
+          <div className="flex items-center justify-between w-full space-x-3">
             <div className="w-1/3">
               <Image
                 src={session?.user?.user_metadata.picture}
@@ -51,9 +92,8 @@ const Profile = () => {
 
             <div className="w-2/3">
               {/* <p>{userInfo?.email} </p> */}
-              <div className="mt-1 mb-4">
+              <div className="mt-1 mb-2">
                 <p className="text-lg">{userInfo?.full_name} </p>
-                <p className="text-xs">252 puncte | 14 quizuri</p>
               </div>
               <Button
                 link="/profile"
@@ -64,6 +104,8 @@ const Profile = () => {
             </div>
           </div>
         </>
+      ) : (
+        <button onClick={() => handleLogin()}>Log in with Google</button>
       )}
     </div>
   );
@@ -84,8 +126,12 @@ const Navbar = () => {
 
   return (
     <nav className="sidebar">
+      <p className="text-2xl">LearnGPT</p>
       <Navigation />
-      <Profile />
+      <div className="relative flex flex-col items-center justify-center w-full">
+        <ProfileStats />
+        <Profile />
+      </div>
     </nav>
   );
 };

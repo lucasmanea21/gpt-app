@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+server/node_modules
+server/node-chatgpt-api/node_modules
 /.pnp
 .pnp.js
 
