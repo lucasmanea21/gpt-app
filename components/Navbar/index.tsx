@@ -22,7 +22,7 @@ const MobileNavbar = ({ tabs }: any) => {
   };
   return (
     <div className="flex w-full justify-between">
-      {tabs.map((tab, i) => {
+      {tabs.map((tab: any, i: any) => {
         return (
           <Item key={i} name={tab?.name} link={tab?.link} icon={tab?.icon} />
         );
@@ -45,7 +45,7 @@ const Navigation = ({ tabs }: any) => {
 
   return (
     <div className="flex flex-col items-center w-full p-5 space-y-3 rounded-lg">
-      {tabs.map((tab, i) => {
+      {tabs.map((tab: any, i: any) => {
         return (
           <Item key={i} name={tab?.name} link={tab?.link} icon={tab?.icon} />
         );
