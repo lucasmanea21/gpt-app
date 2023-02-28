@@ -12,3 +12,6 @@ export const parentMessageIdAtom = atom("");
 export const quizSubjectAtom = atom("");
 export const isQuizLoadingAtom = atom(false);
 export const liveReplyAtom = atom("");
+
+export const timeStartedAtom = atom(0);
+export const timeFinishedAtom = atom(0);

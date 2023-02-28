@@ -23,19 +23,21 @@ const Quiz = (data: any) => {
   return (
     <Card>
       Quiz
-      <div>
-        {questionIndex !== 3 ? (
-          questions && (
-            <Question
-              question={questions[questionIndex]?.question}
-              answers={questions[questionIndex]?.options}
-              correctAnswer={questions[questionIndex]?.answer}
-            />
-          )
-        ) : (
-          <Final question={questions[questionIndex]?.question} />
-        )}
-      </div>
+      {questions && (
+        <div>
+          {questionIndex !== 3 ? (
+            questions && (
+              <Question
+                question={questions[questionIndex]?.question}
+                answers={questions[questionIndex]?.options}
+                correctAnswer={questions[questionIndex]?.answer}
+              />
+            )
+          ) : (
+            <Final question={questions[questionIndex]?.question} />
+          )}
+        </div>
+      )}
     </Card>
   );
 };

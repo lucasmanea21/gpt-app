@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
-import { questionsIndexAtom } from "../../store/atom";
+import { questionsIndexAtom, timeStartedAtom } from "../../store/atom";
 import Button from "../Button";
 
 const Answer = ({
@@ -79,8 +79,17 @@ const Question = ({
   correctAnswer: string;
 }) => {
   const [questionIndex, setQuestionIndex] = useAtom(questionsIndexAtom);
+  const [, setTimeStarted] = useAtom(timeStartedAtom);
+
   const [answered, setAnswered] = useState(false);
   const [selected, setSelected] = useState("a");
+
+  console.log("questionIndex", questionIndex);
+  useEffect(() => {
+    if (questionIndex === 0) {
+      setTimeStarted(Date.now());
+    }
+  }, [questionIndex]);
 
   return (
     <div className="flex flex-col items-center justify-center">

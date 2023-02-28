@@ -4,16 +4,25 @@ import { ChatGPTBrowserClient } from "@waylaidwanderer/chatgpt-api";
 // import { ChatGPTAPI } from "chatgpt";
 import bodyParser from "body-parser";
 import { learnPrompt, quizPrompt } from "./prompts.js";
+import cors from "cors";
 
 const app = express();
 const port = 8080;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
+var allowedOrigins = ["https://gpt-app-two.vercel.app/"];
+app.use(
+  cors({
+    origin: allowedOrigins,
+  })
+);
+
 // let localhost:3000 make calls
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Origin", "https://gpt-app-two.vercel.app/");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
@@ -21,6 +30,8 @@ app.use(function (req, res, next) {
 
   next();
 });
+
+// use cors
 
 var corsMiddleware = function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "localhost"); //replace localhost with actual host

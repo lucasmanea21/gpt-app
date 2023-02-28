@@ -56,14 +56,9 @@ const Chat = () => {
                 {" "}
                 <p className="text-xl">Intrebari recomandate</p>
                 <div className="flex mt-3 space-x-5">
-                  {recommendedQuestions
-                    .slice(
-                      randomNumber > 3 ? randomNumber - 3 : randomNumber,
-                      randomNumber > 3 ? randomNumber : randomNumber + 3
-                    )
-                    .map((item, index) => (
-                      <Related key={index} text={item.intrebare} />
-                    ))}
+                  {recommendedQuestions.slice(0, 3).map((item, index) => (
+                    <Related key={index} text={item.intrebare} />
+                  ))}
                 </div>
               </div>
             </div>
