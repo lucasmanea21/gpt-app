@@ -51,7 +51,8 @@ const ChatInput = () => {
 
               return !isModified
                 ? [...prev, { type: "reply", text: reply }]
-                : [...newPrev, { type: "reply", text: reply }];
+                : // @ts-ignore
+                  [...newPrev, { type: "reply", text: reply }];
             });
           }
         };
