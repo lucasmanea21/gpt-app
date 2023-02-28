@@ -24,7 +24,6 @@ const Create = () => {
     const questions = [];
 
     const lines = response.split("\n");
-    console.log("inputLines", lines);
 
     let currentQuestion = {
       intrebare: "",
@@ -58,8 +57,6 @@ const Create = () => {
         }
       }
     }
-
-    console.log(questions);
   };
 
   processResponse(quizResponse);
@@ -72,8 +69,6 @@ const Create = () => {
 
     res && setQuizResponse(res.data.response);
     res && setIsLoading(false);
-
-    console.log("res", res.data);
   };
 
   const handleCreate = () => {

@@ -27,8 +27,6 @@ const Leaderboard = () => {
     getUsers();
   }, []);
 
-  console.log("users", users);
-
   return (
     <Card>
       <div className="mb-8">

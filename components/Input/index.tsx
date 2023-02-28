@@ -9,11 +9,8 @@ const Input = ({ session }: any) => {
       .from("profiles")
       .update({ bio: input })
       .eq("id", session?.user.id);
-
-    console.log("res", res);
   };
 
-  console.log("input", input);
   return (
     <div className="flex flex-col space-y-4">
       <input

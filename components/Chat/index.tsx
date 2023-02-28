@@ -24,7 +24,6 @@ const Chat = () => {
 
   let randomNumber = Math.floor(Math.random() * 10);
 
-  console.log("chatLog", chatLog);
   return (
     <SectionWrapper className="bg-gray-800">
       <Card>

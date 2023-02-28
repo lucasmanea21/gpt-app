@@ -20,7 +20,6 @@ const EditProfile = ({
   const { register, handleSubmit } = useForm();
   const onSubmit = (data: any) => console.log(data);
 
-  console.log("userInfo", userInfo);
   return (
     <Card>
       <div className="w-full flex justify-center items-center">
@@ -59,10 +58,6 @@ const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [session] = useAtom(userSessionAtom);
   const [userInfo] = useAtom(userInfoAtom);
-
-  console.log("isEdit", isEdit);
-
-  console.log("userInfo", userInfo);
 
   const handleLogin = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({

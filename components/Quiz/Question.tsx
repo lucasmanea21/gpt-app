@@ -82,8 +82,6 @@ const Question = ({
   const [answered, setAnswered] = useState(false);
   const [selected, setSelected] = useState("a");
 
-  console.log("selected", selected);
-
   return (
     <div className="flex flex-col items-center justify-center">
       <div>Question {questionIndex + 1}</div>
@@ -94,7 +92,6 @@ const Question = ({
             <div className="grid w-full grid-cols-2 gap-5 my-8">
               {answers &&
                 answers?.map((answer, index) => {
-                  console.log("index,answer", index, answer);
                   return (
                     <Answer
                       answer={answer}

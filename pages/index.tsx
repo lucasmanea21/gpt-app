@@ -59,8 +59,6 @@ const Home: NextPage = () => {
       user_id: userId,
     };
     const res = await createQuiz(quiz);
-
-    console.log(res);
   };
 
   useEffect(() => {

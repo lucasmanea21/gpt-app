@@ -21,8 +21,6 @@ const Related = ({ text }: { text: string }) => {
       ]);
 
     res && setConversationId(res.data.conversationId);
-
-    console.log("res", res.data);
   };
 
   const onSubmit = () => {

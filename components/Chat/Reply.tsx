@@ -25,7 +25,6 @@ const Reply = ({ text }: { text: string }) => {
             .split(/\r?\n/)
             .filter((a) => a !== "")
             .map((item) => {
-              console.log("item", item, text);
               return (
                 <>
                   <p>{item}</p>

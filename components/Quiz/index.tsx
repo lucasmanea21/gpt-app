@@ -20,10 +20,6 @@ const Quiz = (data: any) => {
 
   const createQuiz = () => {};
 
-  console.log("data", data);
-
-  console.log("questions", data.data.questions);
-
   return (
     <Card>
       Quiz

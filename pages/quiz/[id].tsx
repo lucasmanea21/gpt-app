@@ -35,11 +35,7 @@ const QuizPage = () => {
     const { data, error } = await getQuiz(quizId);
 
     data && setQuizData(data[0]);
-
-    console.log("response", data);
   };
-
-  console.log("quizData", quizData);
 
   return (
     <div>

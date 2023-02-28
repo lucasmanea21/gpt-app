@@ -9,8 +9,6 @@ const Chooser = () => {
   const [options, setOptions] = useState<any>([]);
   const [selected, setSelected] = useAtom(quizSubjectAtom);
 
-  console.log("selected", selected);
-
   useEffect(() => {
     setOptions(
       subjects.map((item, index) => ({
@@ -19,8 +17,6 @@ const Chooser = () => {
       }))
     );
   }, []);
-
-  console.log("options", options);
 
   const customStyles = {
     option: (provided: any, state: any) => ({

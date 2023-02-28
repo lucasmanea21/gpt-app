@@ -154,9 +154,6 @@ const Navbar = () => {
     setWidth(window.innerWidth);
   };
 
-  console.log("width", width);
-  console.log("isMobile", isMobile);
-
   useEffect(() => {
     updateDimensions();
     setisMobile(window.innerWidth < 768);

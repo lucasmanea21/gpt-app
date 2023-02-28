@@ -35,13 +35,11 @@ const ChatInput = () => {
     };
 
     const run = async () => {
-      console.log("running");
       let reply = ``;
       try {
         const eventSource = new EventSource("http://localhost:8080/test");
 
         const updateMessage = (message: any) => {
-          console.log("message", message);
           if (message !== "[DONE]" && message !== `${prompt}`) {
             reply = message !== " " ? `${reply}${message}` : `${reply}\n`;
             setReply((prevState: any) => prevState + message);
@@ -66,15 +64,11 @@ const ChatInput = () => {
           // updateMessage("Server closed connection");
           eventSource.close();
         };
-      } catch (err) {
-        console.log("ERROR", err);
-      }
+      } catch (err) {}
     };
 
     run();
   };
-
-  console.log("reply", reply);
 
   const GPTCall = async (prompt: string) => {
     try {
@@ -93,14 +87,10 @@ const ChatInput = () => {
 
       res && setConversationId(res.data.conversationId);
       res && setParentMessageId(res.data.messageId);
-
-      console.log("res", res.data);
     } catch (error) {
       setFailed(true);
     }
   };
-
-  console.log("failed", failed);
 
   const onSubmit = (e: any) => {
     let savedInput = input;
@@ -112,7 +102,6 @@ const ChatInput = () => {
     // GPTCall(savedInput);
   };
 
-  console.log("input", input);
   return (
     <div>
       <input
