@@ -1,13 +1,26 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import Select from "react-select";
 import classNames from "classnames";
+import { subjects } from "../../data/subjects.js";
+import { useAtom } from "jotai";
+import { quizSubjectAtom } from "../../store/atom";
 
 const Chooser = () => {
-  const options = [
-    { value: "apple", label: "Apple" },
-    { value: "banana", label: "Banana" },
-    { value: "orange", label: "Orange" },
-  ];
+  const [options, setOptions] = useState<any>([]);
+  const [selected, setSelected] = useAtom(quizSubjectAtom);
+
+  console.log("selected", selected);
+
+  useEffect(() => {
+    setOptions(
+      subjects.map((item, index) => ({
+        value: item.subiectPrincipal,
+        label: item.subiectPrincipal,
+      }))
+    );
+  }, []);
+
+  console.log("options", options);
 
   const customStyles = {
     option: (provided: any, state: any) => ({
@@ -33,6 +46,7 @@ const Chooser = () => {
       classNamePrefix="react-select"
       //   @ts-ignore
       className={"bg-blue-500 hover:bg-blue-500"}
+      onChange={(e: any) => setSelected(e.value)}
     />
   );
 };

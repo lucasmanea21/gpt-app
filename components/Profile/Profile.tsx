@@ -96,7 +96,9 @@ const Profile = () => {
                   <div className="w-3/4 flex flex-col justify-between">
                     <div className="">
                       <p className="text-xl">{userInfo?.full_name} </p>
-                      <p className="text-sm text-gray-200">{userInfo?.bio} </p>
+                      <p className="text-sm text-gray-400 mt-1">
+                        {userInfo?.bio ?? "Nicio descriere."}{" "}
+                      </p>
                     </div>
                     <Button
                       onClick={() => setIsEdit(true)}

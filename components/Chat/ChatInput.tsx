@@ -1,12 +1,24 @@
 import axios from "axios";
 import { ChatGPTUnofficialProxyAPI } from "chatgpt";
+import { fetchEventSource } from "@waylaidwanderer/fetch-event-source";
 // @ts-ignore
 import { ChatGPTBrowserClient } from "@waylaidwanderer/chatgpt-api";
 
 import React, { useState } from "react";
-import { fetchEventSource } from "@waylaidwanderer/fetch-event-source";
+import { useAtom } from "jotai";
+import {
+  chatLogAtom,
+  conversationIdAtom,
+  parentMessageIdAtom,
+} from "../../store/atom";
 
 const ChatInput = () => {
+  const [chatLog, setChatLog] = useAtom(chatLogAtom);
+  const [conversationId, setConversationId] = useAtom(conversationIdAtom);
+  const [parentMessageId, setParentMessageId] = useAtom(parentMessageIdAtom);
+  const [failed, setFailed] = useState(false);
+  const [reply, setReply] = useState("");
+
   const [input, setInput] = useState("");
 
   const otherGPTCall = async (prompt: string) => {
@@ -21,61 +33,83 @@ const ChatInput = () => {
         stream: true,
       }),
     };
-    // make a call to the server that takes a stream of text and returns a stream of text
+
+    const run = async () => {
+      console.log("running");
+      let reply = ``;
+      try {
+        const eventSource = new EventSource("http://localhost:8080/test");
+
+        const updateMessage = (message: any) => {
+          console.log("message", message);
+          if (message !== "[DONE]" && message !== `${prompt}`) {
+            reply = message !== " " ? `${reply}${message}` : `${reply}\n`;
+            setReply((prevState: any) => prevState + message);
+            setChatLog((prev) => {
+              let isModified = prev.length > 2;
+              let newPrev = isModified
+                ? prev.slice(0, -2)
+                : { type: "reply", text: reply };
+
+              return !isModified
+                ? [...prev, { type: "reply", text: reply }]
+                : [...newPrev, { type: "reply", text: reply }];
+            });
+          }
+        };
+
+        eventSource.onmessage = function (event) {
+          updateMessage(event.data);
+        };
+
+        eventSource.onerror = function () {
+          // updateMessage("Server closed connection");
+          eventSource.close();
+        };
+      } catch (err) {
+        console.log("ERROR", err);
+      }
+    };
+
+    run();
+  };
+
+  console.log("reply", reply);
+
+  const GPTCall = async (prompt: string) => {
     try {
-      const fetchData = async () => {
-        await fetchEventSource(`http://localhost:8080/chat`, {
-          method: "POST",
-          headers: {
-            Accept: "text/event-stream",
-          },
-          // @ts-ignore
-          onopen(res) {
-            if (res.ok && res.status === 200) {
-              console.log("Connection made ", res);
-            } else if (
-              res.status >= 400 &&
-              res.status < 500 &&
-              res.status !== 429
-            ) {
-              console.log("Client side error ", res);
-            }
-          },
-          onmessage(event) {
-            console.log(event.data);
-            const parsedData = JSON.parse(event.data);
-            // setData((data) => [...data, parsedData]);
-          },
-          onclose() {
-            console.log("Connection closed by the server");
-          },
-          onerror(err) {
-            console.log("There was an error from server", err);
-          },
-        });
-      };
-      fetchData();
-    } catch (err) {
-      console.log("ERROR", err);
+      const res = await axios.post("http://localhost:8080/chat", {
+        prompt: prompt,
+        type: "question",
+        conversationId: conversationId,
+        parentMessageId: parentMessageId,
+      });
+
+      res &&
+        setChatLog((prev) => [
+          ...prev,
+          { type: "reply", text: res.data.response },
+        ]);
+
+      res && setConversationId(res.data.conversationId);
+      res && setParentMessageId(res.data.messageId);
+
+      console.log("res", res.data);
+    } catch (error) {
+      setFailed(true);
     }
   };
 
-  const GPTCall = async (prompt: string) => {
-    const res = await axios.post("http://localhost:8080/chat", {
-      prompt: prompt,
-    });
-
-    console.log("res", res);
-  };
+  console.log("failed", failed);
 
   const onSubmit = (e: any) => {
-    console.log(
-      "process.env.OPENAI_ACCESS_TOKEN",
-      process.env.OPENAI_ACCESS_TOKEN
-    );
+    let savedInput = input;
     e.preventDefault();
+    setChatLog((prev) => [...prev, { type: "question", text: input }]);
 
-    otherGPTCall(input);
+    setInput("");
+    otherGPTCall(savedInput);
+    // GPTCall(savedInput);
   };
 
   console.log("input", input);
@@ -85,7 +119,13 @@ const ChatInput = () => {
         type="text"
         placeholder="Type your message here"
         className="w-full p-3 my-5 bg-gray-800 rounded-lg outline-none"
+        value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e: any) => {
+          if (e.key === "Enter") {
+            onSubmit(e);
+          }
+        }}
       />
       <button onClick={(e: any) => onSubmit(e)}>Submit</button>
     </div>

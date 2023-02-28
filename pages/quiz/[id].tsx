@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 import Button from "../../components/Button";
-import Navbar from "../../components/navbar";
+import Navbar from "../../components/Navbar";
 import Quiz from "../../components/Quiz";
 import SectionWrapper from "../../components/Wrappers";
 import useGetUserData from "../../hooks/useGetUserData";
@@ -44,10 +44,11 @@ const QuizPage = () => {
   return (
     <div>
       <Navbar />
-      <SectionWrapper>
-        {quizData && <Quiz data={quizData} />}
+      <div className="flex justify-center">
+        <SectionWrapper>
+          {quizData && <Quiz data={quizData} />}
 
-        {/* {isAllowed && quizData ? (
+          {/* {isAllowed && quizData ? (
           <Quiz data={quizData} />
         ) : (
           <div className="flex flex-col items-center justify-center">
@@ -59,7 +60,8 @@ const QuizPage = () => {
             </Button>
           </div>
         )} */}
-      </SectionWrapper>
+        </SectionWrapper>
+      </div>
     </div>
   );
 };

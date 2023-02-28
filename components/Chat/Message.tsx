@@ -4,7 +4,7 @@ import React from "react";
 import { userSessionAtom } from "../../store/atom";
 import Chat from "../Cards/ChatCard";
 
-const Message = () => {
+const Message = ({ text }: { text: string }) => {
   const [session] = useAtom(userSessionAtom);
 
   return (
@@ -19,11 +19,7 @@ const Message = () => {
       </div>
 
       <div className="w-full">
-        <p className="text-sm">
-          Dolor nisi aliquip qui ex consectetur laborum nisi do commodo.
-          Consectetur et in quis magna ipsum culpa amet fugiat pariatur sit
-          laboris?
-        </p>
+        <p className="text-sm">{text}</p>
       </div>
     </Chat>
   );

@@ -32,7 +32,7 @@ const Leaderboard = () => {
   return (
     <Card>
       <div className="mb-8">
-        <p className="mb-2 text-3xl">Clasament</p>
+        <p className="mb-2 text-4xl">Clasament</p>
         <p className="text-md">Castiga puncte si califica-te in clasament.</p>
       </div>
       <div className="flex flex-col">

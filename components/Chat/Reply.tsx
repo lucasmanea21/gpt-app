@@ -5,7 +5,7 @@ import { userSessionAtom } from "../../store/atom";
 import Chat from "../Cards/ChatCard";
 import Related from "./Related";
 
-const Reply = () => {
+const Reply = ({ text }: { text: string }) => {
   const [session] = useAtom(userSessionAtom);
 
   return (
@@ -21,27 +21,27 @@ const Reply = () => {
       </div>
       <div className="w-full">
         <p className="text-sm text-gray-200">
-          Elit ut deserunt enim sunt fugiat tempor labore fugiat fugiat dolore.
-          Tempor sint irure magna excepteur eiusmod non non ex. Laborum ea non
-          id non Lorem est occaecat proident commodo irure nostrud labore et ea.
-          Occaecat exercitation aliquip ullamco nisi sit cupidatat veniam culpa
-          cillum mollit et deserunt. Ullamco ea proident enim do labore. Esse
-          velit labore ullamco magna laborum fugiat.
-          <br />
-          <br />
-          Voluptate veniam quis officia tempor deserunt officia anim non ad
-          commodo magna tempor dolore. Magna ipsum dolor dolore ex laborum nulla
-          et. Proident consequat do reprehenderit nisi laborum laborum sint
-          pariatur.
+          {text
+            .split(/\r?\n/)
+            .filter((a) => a !== "")
+            .map((item) => {
+              console.log("item", item, text);
+              return (
+                <>
+                  <p>{item}</p>
+                  <br />
+                </>
+              );
+            })}
         </p>
-        <div className="mt-7">
+        {/* <div className="mt-7">
           <p className="text-lg">Intrebari asemanatoare</p>
-          <div className="flex space-x-5 mt-3">
+          <div className="flex mt-3 space-x-5">
             <Related />
             <Related />
             <Related />
           </div>
-        </div>
+        </div> */}
       </div>
     </Chat>
   );

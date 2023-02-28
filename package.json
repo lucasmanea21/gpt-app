@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@supabase/auth-helpers-react": "^0.3.1",
+    "@supabase/auth-ui-react": "^0.3.0",
+    "@supabase/auth-ui-shared": "^0.1.0",
     "@supabase/supabase-js": "^2.8.0",
     "@waylaidwanderer/chatgpt-api": "^1.20.8",
     "@waylaidwanderer/fetch-event-source": "^3.0.1",
