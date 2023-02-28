@@ -11,6 +11,7 @@ import {
   conversationIdAtom,
   parentMessageIdAtom,
 } from "../../store/atom";
+import { API_URL } from "../../utils/config";
 
 const ChatInput = () => {
   const [chatLog, setChatLog] = useAtom(chatLogAtom);
@@ -37,7 +38,7 @@ const ChatInput = () => {
     const run = async () => {
       let reply = ``;
       try {
-        const eventSource = new EventSource("http://localhost:8080/test");
+        const eventSource = new EventSource(`${API_URL}/test`);
 
         const updateMessage = (message: any) => {
           if (message !== "[DONE]" && message !== `${prompt}`) {
@@ -73,7 +74,7 @@ const ChatInput = () => {
 
   const GPTCall = async (prompt: string) => {
     try {
-      const res = await axios.post("http://localhost:8080/chat", {
+      const res = await axios.post(`${API_URL}/chat`, {
         prompt: prompt,
         type: "question",
         conversationId: conversationId,

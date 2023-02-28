@@ -2,6 +2,7 @@ import axios from "axios";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { isQuizLoadingAtom, quizSubjectAtom } from "../../store/atom";
+import { API_URL } from "../../utils/config";
 import Button from "../Button";
 import Card from "../Cards";
 import Chooser from "./Chooser";
@@ -62,7 +63,7 @@ const Create = () => {
   processResponse(quizResponse);
 
   const GPTCall = async (prompt: string) => {
-    const res = await axios.post("http://localhost:8080/chat", {
+    const res = await axios.post(`${API_URL}/chat`, {
       prompt: prompt,
       type: "quiz",
     });

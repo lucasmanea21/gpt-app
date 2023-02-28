@@ -3,13 +3,14 @@ import { useAtom } from "jotai";
 import React from "react";
 import { BsStars } from "react-icons/bs";
 import { chatLogAtom, conversationIdAtom } from "../../store/atom";
+import { API_URL } from "../../utils/config";
 
 const Related = ({ text }: { text: string }) => {
   const [chatLog, setChatLog] = useAtom(chatLogAtom);
   const [conversationId, setConversationId] = useAtom(conversationIdAtom);
 
   const GPTCall = async (prompt: string) => {
-    const res = await axios.post("http://localhost:8080/chat", {
+    const res = await axios.post(`${API_URL}/chat`, {
       prompt: prompt,
       conversationId: conversationId,
     });
