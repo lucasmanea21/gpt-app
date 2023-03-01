@@ -1,4 +1,4 @@
 export const API_URL =
-  process.env.ENVIRONMENT == "production"
+  process.env.NODE_ENV == "production"
     ? "https://learngpt.herokuapp.com"
     : "http://localhost:8080";
