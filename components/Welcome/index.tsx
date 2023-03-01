@@ -10,8 +10,11 @@ const Welcome = () => {
         <Card>
           <div className="flex flex-col items-center ">
             <div className="text-center">
-              <p className="text-4xl mb-3">Welcome to LearnGPT</p>
-              <p>Quis aute est consequat ex fugiat ex deserunt dolor eu.</p>
+              <p className="text-4xl mb-4">Welcome to LearnGPT</p>
+              <p className="text-md ">
+                O platforma educativa, complet alimentata de inteligenta
+                artificiala.
+              </p>
             </div>
             <div className="w-1/2 mt-10">
               <Button

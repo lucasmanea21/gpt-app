@@ -9,6 +9,7 @@ import { useAtom } from "jotai";
 import { userInfoAtom, userSessionAtom } from "../../store/atom";
 import Button from "../Button";
 import SectionWrapper from "../Wrappers";
+import BgCard from "../Cards/BgCard";
 
 const EditProfile = ({
   setIsEdit,
@@ -79,7 +80,7 @@ const Profile = () => {
       {session?.user && (
         <>
           {!isEdit ? (
-            <Card>
+            <BgCard>
               <div className="w-full flex flex-col justify-center items-center">
                 <div className="flex justify-between w-2/3 space-x-5 mb-10">
                   <Image
@@ -95,18 +96,25 @@ const Profile = () => {
                         {userInfo?.bio ?? "Nicio descriere."}{" "}
                       </p>
                     </div>
-                    <Button
-                      onClick={() => setIsEdit(true)}
-                      customClassName="filled inliine-block w-fit "
-                    >
-                      Edit profile
-                    </Button>
+                    <div className="flex">
+                      <Button
+                        onClick={() => setIsEdit(true)}
+                        customClassName="filled inliine-block w-fit "
+                      >
+                        Edit profile
+                      </Button>
+                      <Button
+                        onClick={handleLogout}
+                        customClassName="bg-red-400 ml-3"
+                      >
+                        Log out
+                      </Button>
+                    </div>
                   </div>
                 </div>
-                <button onClick={handleLogout}>Log out</button>
-                <div className="mt-10">
+                {/* <div className="mt-10">
                   <Input session={session} />
-                </div>
+                </div> */}
               </div>
             </Card>
           ) : (

@@ -1,22 +1,19 @@
 export const quizPrompt = (subject) => {
-  return `Vreau sa imi creezi un quiz format din 3 intrebari legat de orice iti voi spune. Quiz-ul ar trebui sa aibe structura asta:
+  return `Vreau sa imi creezi un quiz format din 3 intrebari legate de orice iti voi spune. Quiz-ul ar trebui sa aibe structura asta:
 
-    [intrebare]
+    [intrebarea x]
     [4 raspunsuri, numerotate a,b,c,d]
-    
-    [raspunsul corect]
-    
-    [intrebare]
-    [4 raspunsuri, numerotate a,b,c,d]
-    
-    [raspunsul corect]
-    
-    [intrebare]
-    [4 raspunsuri, numerotate a,b,c,d]
-    
-    [raspunsul corect]
-    
+
+    [litera raspunsului corect]
+        
     Raspunsurile trebuie sa fie cat se poate de factuale si corecte, fara ambiguitati sau neadevaruri.
+
+    Returneaza-mi doar quiz-ul in formatul asta, pentru a fi direct compatibil cu Javascript:
+    [{question: "", options: [""], correct: ""}]
+
+    Evidentiaza codul cu backticks
+
+    Nu returna absolut nimic altceva, doar array-ul in Javascript. Nici un alt text, te rog.
     
     Subiectul este ${subject}.`;
 };

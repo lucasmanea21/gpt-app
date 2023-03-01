@@ -32,7 +32,7 @@ const Chat = () => {
         <div
           className={`my-10 ${
             chatLog.length > 0 && "overflow-scroll"
-          }  max-h-[500px]`}
+          }  max-h-[500px] overflow-x-hidden`}
         >
           {chatLog.length > 0 ? (
             <>

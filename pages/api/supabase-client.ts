@@ -15,8 +15,18 @@ export const updatePoints = async (id: string, points: number) => {
   return { data, error };
 };
 
-export const createQuiz = async (quiz: Quiz) => {
-  const { data, error } = await supabase.from("quizzes").insert({ ...quiz });
+export const createQuiz = async (quiz: Quiz, id: string) => {
+  console.log("createQuiz prop", quiz);
+  const { data, error } = await supabase
+    .from("quizzes")
+    .insert({ questions: quiz })
+    .select();
+
+  // add 1 to user's quizzes
+  // const { data: userData, error: userError } = await supabase
+  //   .from("users")
+  //   .update({ quizzes: supabase.raw("quizzes + 1") })
+  //   .match({ id: id });
 
   return { data, error };
 };

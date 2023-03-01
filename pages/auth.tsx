@@ -22,7 +22,15 @@ const AuthPage = () => {
             <Auth
               //   @ts-ignore
               supabaseClient={supabase}
-              appearance={{ theme: ThemeSupa }}
+              appearance={{
+                theme: ThemeSupa,
+
+                // className: {
+                //   button:
+                //     "bg-gradient-to-br animate-gradient from-blue-500 to-blue-700",
+                //   //..
+                // },
+              }}
               providers={["google", "facebook", "twitter"]}
               theme="dark"
             />

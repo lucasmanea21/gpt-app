@@ -1,17 +1,26 @@
 // default express server
 import express from "express";
 import { ChatGPTBrowserClient } from "@waylaidwanderer/chatgpt-api";
+import { createClient } from "@supabase/supabase-js";
+
 // import { ChatGPTAPI } from "chatgpt";
 import bodyParser from "body-parser";
 import { learnPrompt, quizPrompt } from "./prompts.js";
 import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const port = 8080;
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-var allowedOrigins = ["https://gpt-app-two.vercel.app/"];
+var allowedOrigins = [
+  "https://gpt-app-two.vercel.app/",
+  "http://localhost:3000",
+];
 app.use(
   cors({
     origin: allowedOrigins,
@@ -34,7 +43,8 @@ app.use(function (req, res, next) {
 // use cors
 
 var corsMiddleware = function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "localhost"); //replace localhost with actual host
+  // res.header("Access-Control-Allow-Origin", "https://gpt-app-two.vercel.app/"); //replace localhost with actual host
+  res.header("Access-Control-Allow-Origin", "*"); //replace localhost with actual host
   res.header(
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, PUT, PATCH, POST, DELETE"
@@ -56,6 +66,20 @@ const clientOptions = {
   cookies: "",
 };
 
+export const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+);
+
+export const updatePoints = async (id, points) => {
+  const { data, error } = await supabase
+    .from("users")
+    .update({ points })
+    .match({ id });
+
+  return { data, error };
+};
+
 app.get("/test", async (req, res) => {
   console.log("Client connected");
   res.setHeader("Content-Type", "text/event-stream");
@@ -64,6 +88,7 @@ app.get("/test", async (req, res) => {
   const chatGptClient = new ChatGPTBrowserClient(clientOptions);
 
   const { prompt } = req.body;
+  const { userId } = req.body;
 
   res.write("hello");
   const response = await chatGptClient.sendMessage(
@@ -78,6 +103,8 @@ app.get("/test", async (req, res) => {
       },
     }
   );
+
+  const pointsResponse = await updatePoints(userId, 10);
 
   res.end();
   // console.log("response", response);
@@ -126,16 +153,20 @@ app.post("/chat", async (req, res) => {
 
   const { prompt } = req.body;
 
+  console.log(prompt);
+
   if (req.body.type == "quiz") {
+    let string = "";
+    let count = 0;
     try {
       const response = await chatGptClient.sendMessage(quizPrompt(prompt), {
-        conversationId: req.body.conversationId || undefined,
-        parentMessageId: req.body.parentMessageId || undefined,
+        // conversationId: req.body.conversationId || undefined,
+        // parentMessageId: req.body.parentMessageId || undefined,
         // If you want streamed responses, you can set the `onProgress` callback to receive the response as it's generated.
         // You will receive one token at a time, so you will need to concatenate them yourself.
-        // onProgress: (token) => {
-        //   res.write(token);
-        // },
+        onProgress: (token) => {
+          string += token;
+        },
       });
 
       console.log("response", response);

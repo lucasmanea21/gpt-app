@@ -8,7 +8,8 @@ import { MdQuiz } from "react-icons/md";
 import { supabase } from "../../pages/api/supabase-client";
 import Card from "../Cards";
 import { BsStars } from "react-icons/bs";
-import { FaUserAlt } from "react-icons/fa";
+import { FaBrain, FaUserAlt } from "react-icons/fa";
+import Link from "next/link";
 
 const MobileNavbar = ({ tabs }: any) => {
   const Item = ({ name, link, icon }: any) => {
@@ -34,12 +35,14 @@ const MobileNavbar = ({ tabs }: any) => {
 const Navigation = ({ tabs }: any) => {
   const Item = ({ name, link, icon }: any) => {
     return (
-      <div className="flex items-center w-full p-2 space-x-3 rounded-md hover:bg-slate-600">
+      <a
+        href={link}
+        className="flex items-center w-full p-2 space-x-3 rounded-md hover:bg-slate-600"
+      >
         {icon}
-        <a href={link}>
-          <p className="text-lg">{name} </p>
-        </a>
-      </div>
+
+        <p className="text-lg">{name} </p>
+      </a>
     );
   };
 
@@ -66,9 +69,9 @@ const ProfileStats = () => {
         </p>
       </div>
       <div className="flex items-center justify-center space-x-2">
-        <BsStars size={16} />
+        <MdQuiz size={16} />
         <p className="text-sm font-medium text-gray-200">
-          {userInfo.points ?? 0} quizuri
+          {userInfo.quizzes ?? 0} quizuri
         </p>
       </div>
     </div>
@@ -140,7 +143,7 @@ const Navbar = () => {
     {
       name: "Quiz",
       icon: <MdQuiz size={!isMobile ? 25 : 28} />,
-      link: "/quiz/4",
+      link: "/quiz/create",
     },
     {
       name: "Leaderboard",
@@ -165,7 +168,10 @@ const Navbar = () => {
     <nav className="sidebar">
       {!isMobile ? (
         <>
-          <p className="text-2xl">LearnGPT</p>
+          <Link href="/" className="flex items-center space-x-3">
+            <FaBrain size={30} className="text-blue-600" />
+            <p className="text-2xl font-semibold text-gray-100">LearnGPT</p>
+          </Link>
           <Navigation tabs={tabs} />
           <div className="relative flex flex-col items-center justify-center w-full">
             {session && <ProfileStats />}

@@ -5,15 +5,29 @@ import momentDurationFormatSetup from "moment-duration-format";
 import { useEffect, useState } from "react";
 import { BsStars } from "react-icons/bs";
 import { MdQuiz } from "react-icons/md";
-import { timeFinishedAtom, timeStartedAtom } from "../../store/atom";
+import { updatePoints } from "../../pages/api/supabase-client";
+import {
+  correctAnswersAtom,
+  quizSubjectAtom,
+  timeFinishedAtom,
+  timeStartedAtom,
+  userSessionAtom,
+} from "../../store/atom";
 import Button from "../Button";
 
 const Final = ({ question }: { question: string }) => {
+  const [userId] = useAtom(userSessionAtom);
+  const [selected] = useAtom(quizSubjectAtom);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [timeFinished, setTimeFinished] = useAtom(timeFinishedAtom);
   const [timeStarted] = useAtom(timeStartedAtom);
+  const [correctAnswers, setCorrectAnswers] = useAtom(correctAnswersAtom);
 
   momentDurationFormatSetup(moment);
+
+  useEffect(() => {
+    handleUpdatePoints();
+  }, []);
 
   useEffect(() => {
     setTimeFinished(Date.now());
@@ -26,6 +40,12 @@ const Final = ({ question }: { question: string }) => {
     // setTimeElapsed(5235);
   }, [timeFinished, timeStarted]);
 
+  const handleUpdatePoints = async () => {
+    const res = await updatePoints(userId, 100);
+
+    console.log("res", res);
+  };
+
   console.log("timeElapsed", timeElapsed);
 
   return (
@@ -33,7 +53,7 @@ const Final = ({ question }: { question: string }) => {
       <div className="text-center">
         <p className="text-4xl font-bold">Quiz Completed.</p>
         <p className="mt-3 text-md">
-          Ai terminat quizul despre Matematica in {/* @ts-ignore */}
+          Ai terminat quizul despre {selected} in {/* @ts-ignore */}
           {moment.duration(timeElapsed / 1000, "seconds").format("mm")}m:
           {/* @ts-ignore */}
           {moment.duration(timeElapsed / 1000, "seconds").format("ss")}s
@@ -41,7 +61,7 @@ const Final = ({ question }: { question: string }) => {
       </div>
 
       <div className="p-5 text-2xl bg-stone-800 rounded-xl">
-        2/3 intrebari corecte
+        {correctAnswers}/3 intrebari corecte
       </div>
       <div className="flex space-x-3 font-semibold">
         <div className="flex items-center justify-center p-2 px-4 space-x-2 cursor-pointer rounded-2xl bg-gradient-to-br animate-gradient from-blue-500 to-purple-700">
@@ -58,7 +78,6 @@ const Final = ({ question }: { question: string }) => {
         <Button customClassName="filled" link="/quiz/create">
           Creaza alt quiz
         </Button>
-        <Button>Share results</Button>
       </div>
     </div>
   );

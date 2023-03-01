@@ -12,6 +12,7 @@ import {
   parentMessageIdAtom,
 } from "../../store/atom";
 import { API_URL } from "../../utils/config";
+import Generating from "./Generating";
 
 const ChatInput = () => {
   const [chatLog, setChatLog] = useAtom(chatLogAtom);
@@ -19,6 +20,7 @@ const ChatInput = () => {
   const [parentMessageId, setParentMessageId] = useAtom(parentMessageIdAtom);
   const [failed, setFailed] = useState(false);
   const [reply, setReply] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [input, setInput] = useState("");
 
@@ -35,26 +37,55 @@ const ChatInput = () => {
       }),
     };
 
+    setIsLoading(true);
+
     const run = async () => {
       let reply = ``;
       try {
         const eventSource = new EventSource(`${API_URL}/test`);
 
+        const filterQuestions = (message: any) => {
+          const questions = message
+            .split("Intrebari asemanatoare:")[1] // get questions part of string
+            .split(/\d+\./) // split questions by question number
+            .filter(Boolean) // remove empty strings
+            .map((q) => ({ intrebare: q.trim() })); // create array of objects with question property
+
+          console.log(questions);
+        };
+
         const updateMessage = (message: any) => {
           if (message !== "[DONE]" && message !== `${prompt}`) {
-            reply = message !== " " ? `${reply}${message}` : `${reply}\n`;
-            setReply((prevState: any) => prevState + message);
-            setChatLog((prev) => {
-              let isModified = prev.length > 2;
-              let newPrev = isModified
-                ? prev.slice(0, -2)
-                : { type: "reply", text: reply };
+            // Check if the "Intrebari asemanatoare:" string appears in the response string
+            const indexOfIntrebari = reply.indexOf("Intrebari asemanatoare:");
 
-              return !isModified
-                ? [...prev, { type: "reply", text: reply }]
-                : // @ts-ignore
-                  [...newPrev, { type: "reply", text: reply }];
-            });
+            if (indexOfIntrebari === -1) {
+              // If it does, set the flag to false so that subsequent tokens are skipped
+              reply =
+                message !== " " ? `${reply}${message}` : `${reply}${message}`;
+              setReply((prevState: any) => prevState + message);
+              setChatLog((prev) => {
+                let isModified = prev.length > 2;
+                let newPrev = isModified
+                  ? prev.slice(0, -2)
+                  : { type: "reply", text: reply };
+
+                console.log("message", message);
+
+                return !isModified
+                  ? [...prev, { type: "reply", text: reply }]
+                  : // @ts-ignore
+                    [...newPrev, { type: "reply", text: reply }];
+              });
+            } else {
+              setChatLog((prev) => [
+                ...prev,
+                {
+                  type: "reply",
+                  text: reply.split("Intrebari asemanatoare")[0],
+                },
+              ]);
+            }
           }
         };
 
@@ -119,6 +150,7 @@ const ChatInput = () => {
         }}
       />
       <button onClick={(e: any) => onSubmit(e)}>Submit</button>
+      {isLoading && <Generating />}
     </div>
   );
 };

@@ -1,25 +1,44 @@
 import axios from "axios";
+import { create } from "domain";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createQuiz } from "../../pages/api/supabase-client";
 import { isQuizLoadingAtom, quizSubjectAtom } from "../../store/atom";
 import { API_URL } from "../../utils/config";
 import Button from "../Button";
 import Card from "../Cards";
+import BgCard from "../Cards/BgCard";
 import Chooser from "./Chooser";
 import Loading from "./Loading";
 
 const Create = () => {
-  const [quizResponse, setQuizResponse] = useState(
-    `Bineinteles, sunt gata sa iti creez quiz-ul despre subiectul "Științe". 
-    Iata cele trei intrebari ale tale:\n\nIntrebarea 
-    1:\nCare este cel mai mic element al tabelului periodic al elementelor?\n
-    a) Hidrogen\nb) Helium\nc) Carbon\nd) Oxigen\n\nRaspunsul corect: 
-    a) Hidrogen\n\nIntrebarea 2:\nCe este ADN-ul?\n
-    a) Un tip de celula\nb) O proteina\nc) Un acord de muzica\nd) Un acid nucleic\n\nRaspunsul corect: d) Un acid nucleic\n\nIntrebarea 3:\nCare este procesul prin care plantele folosesc lumina solara pentru a produce energie?\na) Fotosinteza\nb) Fermentatia\nc) Osmoza\nd) Respiratia celulara\n\nRaspunsul corect: a) Fotosinteza\n\nSper ca acest quiz sa fie interesant si educativ pentru tine!`
-  );
+  const [quizResponse, setQuizResponse] = useState(``);
 
   const [isLoading, setIsLoading] = useAtom(isQuizLoadingAtom);
   const [selected] = useAtom(quizSubjectAtom);
+  const [failed, setFailed] = useState(false);
+
+  console.log("quizResponse", quizResponse);
+
+  const processResponse2 = async (response: string) => {
+    const matches = response.match(/```([\s\S]*?)```/);
+
+    console.log("matches", matches);
+
+    // Check if a match was found
+
+    const quizString = matches && matches[1];
+    console.log(quizString); // Output: "asdasds"
+
+    const res = quizString && (await createQuiz(eval(quizString)));
+
+    console.log("res", res.data);
+    res.data && handleCreated(res.data[0].id);
+
+    console.log("quiz creation res", res);
+
+    // console.log("response.split()", setQuizResponse(response.split("```")[1]));
+  };
 
   const processResponse = (response: string) => {
     const questions = [];
@@ -35,7 +54,7 @@ const Create = () => {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
 
-      if (line.startsWith("Intrebare: ")) {
+      if (line.startsWith("Intrebar")) {
         // Adaugam un nou obiect la array-ul de intrebari si setam campul "Intrebare"
         currentQuestion = {
           intrebare: line.substring(11),
@@ -58,27 +77,71 @@ const Create = () => {
         }
       }
     }
+    console.log("questions", questions);
   };
 
-  processResponse(quizResponse);
+  //   const response = `Desigur, iată un quiz cu trei întrebări din domeniul istoriei:
+
+  //  \```[
+  //     ({
+  //       intrebare: "Când a avut loc Marea Schismă din Biserica Catolică?",
+  //       raspunsuri: ["a. 1054", "b. 1215", "c. 1378", "d. 1517"],
+  //       raspunsCorect: "a",
+  //     },
+  //     {
+  //       intrebare: "Când a avut loc Revoluția Franceză?",
+  //       raspunsuri: [
+  //         "a. 1789-1799",
+  //         "b. 1815-1825",
+  //         "c. 1848-1849",
+  //         "d. 1914-1918",
+  //       ],
+  //       raspunsCorect: "a",
+  //     },
+  //     {
+  //       intrebare: "Cine a fost primul împărat roman?",
+  //       raspunsuri: ["a. Augustus", "b. Julius Caesar", "c. Nero", "d. Traian"],
+  //       raspunsCorect: "a",
+  //     })
+  //   ]\```
+
+  //   Sper că acest quiz este util! Dacă aveți nevoie de mai multe întrebări sau de un quiz din alt domeniu, vă stau la dispoziție să mă întrebați.`;
+  // processResponse(response);
+  // processResponse2(response);
 
   const GPTCall = async (prompt: string) => {
-    const res = await axios.post(`${API_URL}/chat`, {
-      prompt: prompt,
-      type: "quiz",
-    });
+    try {
+      const res = await axios.post(`${API_URL}/chat`, {
+        prompt: prompt,
+        type: "quiz",
+      });
 
-    res && setQuizResponse(res.data.response);
-    res && setIsLoading(false);
+      res && setQuizResponse(res.data.response);
+      !res.data.response && setFailed(true);
+      res && setIsLoading(false);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
+
+  useEffect(() => {
+    quizResponse && processResponse2(quizResponse);
+  }, [quizResponse]);
 
   const handleCreate = () => {
     setIsLoading(true);
     GPTCall(selected);
   };
 
+  const handleCreated = (id: string) => {
+    //redirect to quiz
+    window.location.href = `/quiz/${id}`;
+  };
+
+  console.log("isLoading, quizResponse", isLoading, quizResponse);
+
   return (
-    <Card>
+    <BgCard>
       {!isLoading ? (
         <>
           <div className="mb-3">
@@ -94,9 +157,9 @@ const Create = () => {
 
               <Chooser />
             </div>
-            <div>
+            {/* <div>
               <p className="text-xl">Perioada quizului</p>
-            </div>
+            </div> */}
           </div>
           <Button
             customClassName="filled text-xl"
@@ -106,9 +169,9 @@ const Create = () => {
           </Button>{" "}
         </>
       ) : (
-        <Loading />
+        <Loading failed={failed} />
       )}
-    </Card>
+    </BgCard>
   );
 };
 

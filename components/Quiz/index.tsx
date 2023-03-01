@@ -1,6 +1,10 @@
 import { useAtom } from "jotai";
 import React, { useState, useEffect } from "react";
-import { questionsIndexAtom } from "../../store/atom";
+import {
+  answersAtom,
+  questionsAtom,
+  questionsIndexAtom,
+} from "../../store/atom";
 import useTimeUntil from "../../utils/useTimeUntil";
 import Card from "../Cards";
 import Final from "./Final";
@@ -8,11 +12,16 @@ import Question from "./Question";
 
 const Quiz = (data: any) => {
   const [questionIndex, setQuestionIndex] = useAtom(questionsIndexAtom);
-  const [questions, setQuestions] = useState<any>([]);
+  const [questions, setQuestions] = useAtom(questionsAtom);
+  const [answers, setAnswers] = useAtom(answersAtom);
 
   const { timeLeft, hours, minutes, seconds } = useTimeUntil(
     Date.parse(data.createdAt)
   );
+
+  useEffect(() => {
+    questions && setAnswers(questions[questionIndex]?.options);
+  }, [questions]);
 
   useEffect(() => {
     setQuestions(data.data.questions);
@@ -22,7 +31,6 @@ const Quiz = (data: any) => {
 
   return (
     <Card>
-      Quiz
       {questions && (
         <div>
           {questionIndex !== 3 ? (
@@ -30,7 +38,7 @@ const Quiz = (data: any) => {
               <Question
                 question={questions[questionIndex]?.question}
                 answers={questions[questionIndex]?.options}
-                correctAnswer={questions[questionIndex]?.answer}
+                correctAnswer={questions[questionIndex]?.correct}
               />
             )
           ) : (
