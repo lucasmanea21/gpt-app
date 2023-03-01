@@ -33,8 +33,9 @@ const Final = ({ question }: { question: string }) => {
       <div className="text-center">
         <p className="text-4xl font-bold">Quiz Completed.</p>
         <p className="mt-3 text-md">
-          Ai terminat quizul despre Matematica in{" "}
+          Ai terminat quizul despre Matematica in {/* @ts-ignore */}
           {moment.duration(timeElapsed / 1000, "seconds").format("mm")}m:
+          {/* @ts-ignore */}
           {moment.duration(timeElapsed / 1000, "seconds").format("ss")}s
         </p>
       </div>
