@@ -59,6 +59,12 @@ var corsMiddleware = function (req, res, next) {
 
 app.use(corsMiddleware);
 
+const accessTokens = [
+  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UaEVOVUpHTkVNMVFURTRNMEZCTWpkQ05UZzVNRFUxUlRVd1FVSkRNRU13UmtGRVFrRXpSZyJ9.eyJodHRwczovL2FwaS5vcGVuYWkuY29tL3Byb2ZpbGUiOnsiZW1haWwiOiJpdG9hc3QyMDAwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJnZW9pcF9jb3VudHJ5IjoiUk8ifSwiaHR0cHM6Ly9hcGkub3BlbmFpLmNvbS9hdXRoIjp7InVzZXJfaWQiOiJ1c2VyLVdqMVZ0RlQwcXJLSnFlYmIwQlc5NmZkSCJ9LCJpc3MiOiJodHRwczovL2F1dGgwLm9wZW5haS5jb20vIiwic3ViIjoiYXV0aDB8NjNmNzFhOTBhYzdhNjdjN2M5Njk0NjkwIiwiYXVkIjpbImh0dHBzOi8vYXBpLm9wZW5haS5jb20vdjEiLCJodHRwczovL29wZW5haS5vcGVuYWkuYXV0aDBhcHAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTY3NzUzMTcwMCwiZXhwIjoxNjc4NzQxMzAwLCJhenAiOiJUZEpJY2JlMTZXb1RIdE45NW55eXdoNUU0eU9vNkl0RyIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgbW9kZWwucmVhZCBtb2RlbC5yZXF1ZXN0IG9yZ2FuaXphdGlvbi5yZWFkIG9mZmxpbmVfYWNjZXNzIn0.RFJi_2A7jejxK5Vyt51ZbNWWvdUxVtVftqHfitNEjy-ej7NYKJBorCnQugp0qlmyGUUVm4UWUZMA90HdXMq4ZVDZ3TwVizcK39_bikscebwF1vPQXv4241zN4yW-872ggJaLMkPV0iknvguGVMRIp3vL-eT-idUkd1sS55r7FB1oQdBFrKYUQ3CsXruvNO72Ls2AwfZKRqar6JzogoZqQgSEP99C6j-0H6OWdu53MSvZDP2vsYlnUvoFf4EZdIi3uF43DO30aBJPe3Wi19WgrB8hfGKy_Yn6c0zqKLvRt0lTK_U6-l0Md9lja-5DmwyaEJFPNo3d95EcihTT9VHqMw",
+  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UaEVOVUpHTkVNMVFURTRNMEZCTWpkQ05UZzVNRFUxUlRVd1FVSkRNRU13UmtGRVFrRXpSZyJ9.eyJodHRwczovL2FwaS5vcGVuYWkuY29tL3Byb2ZpbGUiOnsiZW1haWwiOiJpdG9hc3QyMDAwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJnZW9pcF9jb3VudHJ5IjoiUk8ifSwiaHR0cHM6Ly9hcGkub3BlbmFpLmNvbS9hdXRoIjp7InVzZXJfaWQiOiJ1c2VyLVdqMVZ0RlQwcXJLSnFlYmIwQlc5NmZkSCJ9LCJpc3MiOiJodHRwczovL2F1dGgwLm9wZW5haS5jb20vIiwic3ViIjoiYXV0aDB8NjNmNzFhOTBhYzdhNjdjN2M5Njk0NjkwIiwiYXVkIjpbImh0dHBzOi8vYXBpLm9wZW5haS5jb20vdjEiLCJodHRwczovL29wZW5haS5vcGVuYWkuYXV0aDBhcHAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTY3NzUzMTcwMCwiZXhwIjoxNjc4NzQxMzAwLCJhenAiOiJUZEpJY2JlMTZXb1RIdE45NW55eXdoNUU0eU9vNkl0RyIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgbW9kZWwucmVhZCBtb2RlbC5yZXF1ZXN0IG9yZ2FuaXphdGlvbi5yZWFkIG9mZmxpbmVfYWNjZXNzIn0.RFJi_2A7jejxK5Vyt51ZbNWWvdUxVtVftqHfitNEjy-ej7NYKJBorCnQugp0qlmyGUUVm4UWUZMA90HdXMq4ZVDZ3TwVizcK39_bikscebwF1vPQXv4241zN4yW-872ggJaLMkPV0iknvguGVMRIp3vL-eT-idUkd1sS55r7FB1oQdBFrKYUQ3CsXruvNO72Ls2AwfZKRqar6JzogoZqQgSEP99C6j-0H6OWdu53MSvZDP2vsYlnUvoFf4EZdIi3uF43DO30aBJPe3Wi19WgrB8hfGKy_Yn6c0zqKLvRt0lTK_U6-l0Md9lja-5DmwyaEJFPNo3d95EcihTT9VHqMw",
+  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UaEVOVUpHTkVNMVFURTRNMEZCTWpkQ05UZzVNRFUxUlRVd1FVSkRNRU13UmtGRVFrRXpSZyJ9.eyJodHRwczovL2FwaS5vcGVuYWkuY29tL3Byb2ZpbGUiOnsiZW1haWwiOiJpdG9hc3QyMDAwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJnZW9pcF9jb3VudHJ5IjoiUk8ifSwiaHR0cHM6Ly9hcGkub3BlbmFpLmNvbS9hdXRoIjp7InVzZXJfaWQiOiJ1c2VyLVdqMVZ0RlQwcXJLSnFlYmIwQlc5NmZkSCJ9LCJpc3MiOiJodHRwczovL2F1dGgwLm9wZW5haS5jb20vIiwic3ViIjoiYXV0aDB8NjNmNzFhOTBhYzdhNjdjN2M5Njk0NjkwIiwiYXVkIjpbImh0dHBzOi8vYXBpLm9wZW5haS5jb20vdjEiLCJodHRwczovL29wZW5haS5vcGVuYWkuYXV0aDBhcHAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTY3NzUzMTcwMCwiZXhwIjoxNjc4NzQxMzAwLCJhenAiOiJUZEpJY2JlMTZXb1RIdE45NW55eXdoNUU0eU9vNkl0RyIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgbW9kZWwucmVhZCBtb2RlbC5yZXF1ZXN0IG9yZ2FuaXphdGlvbi5yZWFkIG9mZmxpbmVfYWNjZXNzIn0.RFJi_2A7jejxK5Vyt51ZbNWWvdUxVtVftqHfitNEjy-ej7NYKJBorCnQugp0qlmyGUUVm4UWUZMA90HdXMq4ZVDZ3TwVizcK39_bikscebwF1vPQXv4241zN4yW-872ggJaLMkPV0iknvguGVMRIp3vL-eT-idUkd1sS55r7FB1oQdBFrKYUQ3CsXruvNO72Ls2AwfZKRqar6JzogoZqQgSEP99C6j-0H6OWdu53MSvZDP2vsYlnUvoFf4EZdIi3uF43DO30aBJPe3Wi19WgrB8hfGKy_Yn6c0zqKLvRt0lTK_U6-l0Md9lja-5DmwyaEJFPNo3d95EcihTT9VHqMw",
+];
+
 const clientOptions = {
   reverseProxyUrl: "https://chatgpt.duti.tech/api/conversation",
   accessToken:
@@ -122,6 +128,22 @@ app.get("/test", async (req, res) => {
   });
 });
 
+const asyncCallsTest = async () => {
+  const chatGptClient = new ChatGPTBrowserClient(clientOptions);
+
+  try {
+    const response = await chatGptClient.sendMessage(quizPrompt(prompt), {});
+    const response2 = await chatGptClient.sendMessage(quizPrompt(prompt), {});
+    const response3 = await chatGptClient.sendMessage(quizPrompt(prompt), {});
+
+    console.log("response", response, response2, response3);
+
+    response && res.send(response);
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
 app.get("/conversation", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Content-Type", "text/event-stream");
@@ -133,8 +155,8 @@ app.get("/conversation", async (req, res) => {
   const { prompt } = req.body;
 
   const response = await chatGptClient.sendMessage(quizPrompt(prompt), {
-    conversationId: req.body.conversationId || undefined,
-    parentMessageId: req.body.parentMessageId || undefined,
+    // conversationId: req.body.conversationId || undefined,
+    // parentMessageId: req.body.parentMessageId || undefined,
     // If you want streamed responses, you can set the `onProgress` callback to receive the response as it's generated.
     // You will receive one token at a time, so you will need to concatenate them yourself.
     onProgress: (token) => {
@@ -159,19 +181,13 @@ app.post("/chat", async (req, res) => {
     let string = "";
     let count = 0;
     try {
-      const response = await chatGptClient.sendMessage(quizPrompt(prompt), {
-        // conversationId: req.body.conversationId || undefined,
-        // parentMessageId: req.body.parentMessageId || undefined,
-        // If you want streamed responses, you can set the `onProgress` callback to receive the response as it's generated.
-        // You will receive one token at a time, so you will need to concatenate them yourself.
-        onProgress: (token) => {
-          string += token;
-        },
-      });
+      const response = await chatGptClient.sendMessage(quizPrompt(prompt), {});
+      const response2 = await chatGptClient.sendMessage(quizPrompt(prompt), {});
+      const response3 = await chatGptClient.sendMessage(quizPrompt(prompt), {});
 
-      console.log("response", response);
+      console.log("response", response, response2, response3);
 
-      response && res.send(response);
+      response && res.send(response + response2 + response3);
     } catch (error) {
       console.log("error", error);
     }

@@ -151,7 +151,7 @@ const Create = () => {
               🤩
             </p>
           </div>
-          <div className="my-5 space-y-5">
+          <div className="my-7 space-y-5">
             <div>
               <p className="mb-2 text-xl">Subiectul quizului</p>
 
@@ -162,7 +162,7 @@ const Create = () => {
             </div> */}
           </div>
           <Button
-            customClassName="filled text-xl"
+            customClassName="filled text-md "
             onClick={() => handleCreate()}
           >
             Creeaza

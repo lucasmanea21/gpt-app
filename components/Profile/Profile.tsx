@@ -82,7 +82,7 @@ const Profile = () => {
           {!isEdit ? (
             <BgCard>
               <div className="w-full flex flex-col justify-center items-center">
-                <div className="flex justify-between w-2/3 space-x-5 mb-10">
+                <div className="flex justify-between w-full space-x-12 ">
                   <Image
                     src={session?.user.user_metadata.picture}
                     width={150}
@@ -91,8 +91,8 @@ const Profile = () => {
                   />
                   <div className="w-3/4 flex flex-col justify-between">
                     <div className="">
-                      <p className="text-xl">{userInfo?.full_name} </p>
-                      <p className="text-sm text-gray-400 mt-1">
+                      <p className="text-3xl">{userInfo?.full_name} </p>
+                      <p className="text-md text-gray-400 mt-1">
                         {userInfo?.bio ?? "Nicio descriere."}{" "}
                       </p>
                     </div>
@@ -105,7 +105,7 @@ const Profile = () => {
                       </Button>
                       <Button
                         onClick={handleLogout}
-                        customClassName="bg-red-400 ml-3"
+                        customClassName="bg-red-600 ml-3"
                       >
                         Log out
                       </Button>
@@ -116,7 +116,7 @@ const Profile = () => {
                   <Input session={session} />
                 </div> */}
               </div>
-            </Card>
+            </BgCard>
           ) : (
             <EditProfile setIsEdit={setIsEdit} userInfo={userInfo} />
           )}

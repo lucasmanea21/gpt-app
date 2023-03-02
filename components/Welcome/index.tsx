@@ -10,16 +10,16 @@ const Welcome = () => {
         <Card>
           <div className="flex flex-col items-center ">
             <div className="text-center">
-              <p className="text-4xl mb-4">Welcome to LearnGPT</p>
-              <p className="text-md ">
+              <p className="text-6xl font-semibold mb-6">Welcome to LearnGPT</p>
+              <p className="text-lg ">
                 O platforma educativa, complet alimentata de inteligenta
                 artificiala.
               </p>
             </div>
-            <div className="w-1/2 mt-10">
+            <div className="w-1/3 mt-16">
               <Button
                 link="/auth"
-                customClassName="text-2xl filled  py-5 h-[50px] flex justify-center items-center text-center"
+                customClassName="text-lg filled  py-3 h-[50px] flex justify-center items-center text-center"
               >
                 Conecteaza-te pentru a incepe!
               </Button>

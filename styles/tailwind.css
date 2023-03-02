@@ -8,7 +8,7 @@
 }
 
 .btn {
-  @apply text-sm rounded-xl items-center py-[5px] px-3 cursor-pointer;
+  @apply rounded-xl items-center py-[5px] px-3 cursor-pointer;
 }
 
 .btn.filled,

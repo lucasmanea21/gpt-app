@@ -157,9 +157,9 @@ const Question = ({
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div>Question {questionIndex + 1}</div>
+      <div className="text-xl mb-3">Question {questionIndex + 1}</div>
       <div className="flex flex-col items-center justify-center w-full">
-        <p className="text-xl text-center">{question}</p>
+        <p className="text-3xl text-center mb-4">{question}</p>
         {!answered ? (
           <>
             <div className="grid w-full grid-cols-2 gap-5 my-8">
@@ -178,7 +178,7 @@ const Question = ({
                 })}
             </div>
             <Button
-              customClassName="filled mt-5"
+              customClassName="filled mt-5 text-xl"
               onClick={() => {
                 setAnswered(true);
                 // if (questionIndex + 1 <= 2) {

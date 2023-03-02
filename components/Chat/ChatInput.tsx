@@ -13,6 +13,7 @@ import {
 } from "../../store/atom";
 import { API_URL } from "../../utils/config";
 import Generating from "./Generating";
+import Button from "../Button";
 
 const ChatInput = () => {
   const [chatLog, setChatLog] = useAtom(chatLogAtom);
@@ -149,7 +150,9 @@ const ChatInput = () => {
           }
         }}
       />
-      <button onClick={(e: any) => onSubmit(e)}>Submit</button>
+      <Button customClassName="filled" onClick={(e: any) => onSubmit(e)}>
+        Submit
+      </Button>
       {isLoading && <Generating />}
     </div>
   );

@@ -109,7 +109,7 @@ const Profile = () => {
                 </div>
                 <Button
                   link="/profile"
-                  customClassName="filled flex w-full justify-center"
+                  customClassName="filled flex w-full justify-center text-sm"
                 >
                   Vezi profil
                 </Button>

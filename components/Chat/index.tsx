@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { chatLogAtom } from "../../store/atom";
 import Card from "../Cards";
 import InfoCard from "../Cards/InfoCard";
@@ -21,14 +21,34 @@ const InfoColumn = () => {
 
 const Chat = () => {
   const [chatLog, setchatLog] = useAtom(chatLogAtom);
+  const [randomStrings, setrandomStrings] = useState<any>([]);
+
+  useEffect(() => {
+    getRandomStrings();
+  }, []);
+
+  const getRandomStrings = () => {
+    const numElements = 3;
+    const result = [];
+    const len = recommendedQuestions.length;
+
+    for (let i = 0; i < numElements; i++) {
+      const randomIndex = Math.floor(Math.random() * len);
+      result.push(recommendedQuestions[randomIndex]);
+    }
+
+    setrandomStrings(result);
+  };
 
   let randomNumber = Math.floor(Math.random() * 10);
 
   return (
     <SectionWrapper className="bg-gray-800">
       <Card>
-        <p className="text-3xl">Learn</p>
-        <p>Invata punand intrebari legate de orice subiect.</p>
+        <p className="text-4xl font-semibold mb-2">Learn</p>
+        <p className="text-md">
+          Invata punand intrebari legate de orice subiect.
+        </p>
         <div
           className={`my-10 ${
             chatLog.length > 0 && "overflow-scroll"
@@ -56,8 +76,12 @@ const Chat = () => {
                 {" "}
                 <p className="text-xl">Intrebari recomandate</p>
                 <div className="flex mt-3 space-x-5">
-                  {recommendedQuestions.slice(0, 3).map((item, index) => (
-                    <Related key={index} text={item.intrebare} />
+                  {getRandomStrings().map((item, index) => (
+                    <Related
+                      key={index}
+                      text={item.intrebare}
+                      subject={item.subiect}
+                    />
                   ))}
                 </div>
               </div>

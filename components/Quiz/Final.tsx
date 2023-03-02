@@ -51,7 +51,7 @@ const Final = ({ question }: { question: string }) => {
   return (
     <div className="flex flex-col items-center justify-center space-y-10">
       <div className="text-center">
-        <p className="text-4xl font-bold">Quiz Completed.</p>
+        <p className="text-4xl font-bold">Quiz completat.</p>
         <p className="mt-3 text-md">
           Ai terminat quizul despre {selected} in {/* @ts-ignore */}
           {moment.duration(timeElapsed / 1000, "seconds").format("mm")}m:
