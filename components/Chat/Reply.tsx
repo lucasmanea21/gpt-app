@@ -4,6 +4,7 @@ import React from "react";
 import { userSessionAtom } from "../../store/atom";
 import Chat from "../Cards/ChatCard";
 import Related from "./Related";
+import ChatGPTLogo from "../../public/ChatGPT_logo.svg";
 
 const Reply = ({ text }: { text: string }) => {
   const [session] = useAtom(userSessionAtom);
@@ -12,12 +13,7 @@ const Reply = ({ text }: { text: string }) => {
     <Chat bgColor="bg-slate-700">
       {" "}
       <div className="w-[60px]">
-        <Image
-          src={session?.user?.user_metadata.picture}
-          width={50}
-          height={50}
-          alt="pfp"
-        />
+        <Image src={ChatGPTLogo} width={50} height={50} alt="LearnGPT" />
       </div>
       <div className="w-full">
         <p className="text-sm text-gray-200">
