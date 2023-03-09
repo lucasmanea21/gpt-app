@@ -76,7 +76,7 @@ const Chat = () => {
                 {" "}
                 <p className="text-xl">Intrebari recomandate</p>
                 <div className="flex mt-3 space-x-5">
-                  {getRandomStrings().map((item, index) => (
+                  {randomStrings.map((item: any, index: any) => (
                     <Related
                       key={index}
                       text={item.intrebare}
