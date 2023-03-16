@@ -19,7 +19,7 @@ const Welcome = () => {
             <div className="w-1/3 mt-16">
               <Button
                 link="/auth"
-                customClassName="text-lg filled  py-3 h-[50px] flex justify-center items-center text-center"
+                customClassName="text-lg filled w-full px-4 py-3 h-[50px] flex justify-center items-center text-center"
               >
                 Conecteaza-te pentru a incepe!
               </Button>

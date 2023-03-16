@@ -81,7 +81,7 @@ const Answered = ({
 
   return (
     <div className="flex flex-col items-center justify-center mt-4">
-      <div className="text-md mb-3">Raspunsul tau:</div>
+      {/* <div className="text-md mb-3">Raspunsul tau:</div>
       <div>
         <Answer
           answer={givenAnswer}
@@ -90,10 +90,12 @@ const Answered = ({
           selected=""
           isPreview={true}
         />
-      </div>
+      </div> */}
 
       {isCorrect ? (
-        <div className="text-green-500">Correct</div>
+        <div className="bg-gradient-to-br animate-gradient from-green-500 to-green-700 py-1 px-2 my-3 rounded-xl">
+          Corect!
+        </div>
       ) : (
         <div className="bg-gradient-to-br animate-gradient from-red-500 to-red-700 py-1 px-2 my-3 rounded-xl">
           Incorect
