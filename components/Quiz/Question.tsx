@@ -115,7 +115,7 @@ const Answered = ({
       </div>
 
       <Button
-        customClassName="filled mt-5"
+        className="filled mt-5"
         onClick={() => {
           if (questionIndex + 1 <= 3) {
             setAnswered(false);
@@ -180,7 +180,7 @@ const Question = ({
                 })}
             </div>
             <Button
-              customClassName="filled mt-5 text-xl"
+              className="filled mt-5 text-xl"
               onClick={() => {
                 setAnswered(true);
                 // if (questionIndex + 1 <= 2) {

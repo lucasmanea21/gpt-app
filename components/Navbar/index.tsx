@@ -109,7 +109,7 @@ const Profile = () => {
                 </div>
                 <Button
                   link="/profile"
-                  customClassName="filled flex w-full justify-center text-sm"
+                  className="filled flex w-full justify-center text-sm"
                 >
                   Vezi profil
                 </Button>
@@ -119,7 +119,7 @@ const Profile = () => {
         </>
       ) : (
         <Button
-          customClassName="filled w-full py-5 h-[50px] flex justify-center items-center text-center"
+          className="filled w-full py-5 h-[50px] flex justify-center items-center text-center"
           onClick={() => handleLogin()}
         >
           Conecteaza-te

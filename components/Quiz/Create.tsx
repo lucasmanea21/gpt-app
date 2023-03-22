@@ -10,6 +10,7 @@ import Card from "../Cards";
 import BgCard from "../Cards/BgCard";
 import Chooser from "./Chooser";
 import Loading from "./Loading";
+import { subjects } from "../../data/subjects.js";
 
 const Create = () => {
   const [quizResponse, setQuizResponse] = useState(``);
@@ -29,6 +30,8 @@ const Create = () => {
 
     const quizString = matches && matches[1];
     console.log(quizString); // Output: "asdasds"
+
+    console.log("quizString", quizString);
 
     const res = quizString && (await createQuiz(eval(quizString)));
 
@@ -151,20 +154,53 @@ const Create = () => {
               🤩
             </p>
           </div>
-          <div className="my-7 space-y-5">
+          <div className="space-y-5 my-7">
             <div>
               <p className="mb-2 text-xl">Subiectul quizului</p>
 
-              <Chooser />
+              <Chooser items={subjects} />
+            </div>
+            <div className="flex justify-between w-full space-x-4">
+              <div className="w-1/2">
+                {/* Type of quiz: short, medium, long */}
+                <p className="mb-2 text-xl">Type of quiz</p>
+                <Chooser
+                  items={[
+                    { name: "Short: 3 questions" },
+                    { name: "Medium: 5 questions" },
+                    { name: "Long: 10 questions" },
+                  ]}
+                />
+              </div>
+              <div className="w-1/2">
+                {/* Difficulty: easy, medium, hard  */}
+                <p className="mb-2 text-xl">Difficulty</p>
+                <input
+                  className="block w-full px-4 py-2 leading-normal bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:shadow-outline"
+                  type="number"
+                  min="1"
+                  max="10"
+                />
+              </div>
+            </div>
+            <div>
+              {/* is public check */}
+              <p className="mb-2 text-xl">Let others join</p>
+              <label>
+                <input
+                  className="block w-full px-4 py-2 leading-normal bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:shadow-outline"
+                  type="checkbox"
+                  // checked={isChecked}
+                  // onChange={handleCheckboxChange}
+                />
+                Checkbox Label
+              </label>
             </div>
             {/* <div>
               <p className="text-xl">Perioada quizului</p>
             </div> */}
           </div>
-          <Button
-            customClassName="filled text-md "
-            onClick={() => handleCreate()}
-          >
+          <Button className="filled text-md " onClick={() => handleCreate()}>
             Creeaza
           </Button>{" "}
         </>

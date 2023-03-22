@@ -5,7 +5,7 @@ const Retry = () => {
   return (
     <div>
       <p>Oops! Intrebarea ta a esuat.</p>
-      <Button customClassName="filled">Incearca din nou</Button>
+      <Button className="filled">Incearca din nou</Button>
     </div>
   );
 };

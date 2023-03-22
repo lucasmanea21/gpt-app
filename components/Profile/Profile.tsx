@@ -45,7 +45,7 @@ const EditProfile = ({
 
           <Button
             onClick={() => setIsEdit(false)}
-            customClassName="filled inliine-block w-fit "
+            className="filled inliine-block w-fit "
           >
             Save changes
           </Button>
@@ -99,13 +99,13 @@ const Profile = () => {
                     <div className="flex">
                       <Button
                         onClick={() => setIsEdit(true)}
-                        customClassName="filled inliine-block w-fit "
+                        className="filled inliine-block w-fit "
                       >
                         Edit profile
                       </Button>
                       <Button
                         onClick={handleLogout}
-                        customClassName="bg-red-600 ml-3"
+                        className="bg-red-600 ml-3"
                       >
                         Log out
                       </Button>

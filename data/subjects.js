@@ -1,26 +1,26 @@
 export const subjects = [
   {
-    subiectPrincipal: "Istorie",
+    name: "Istorie",
     subSubiecte: ["Istoria universală", "Istoria Europei", "Istoria României"],
   },
   {
-    subiectPrincipal: "Literatură",
+    name: "Literatură",
     subSubiecte: ["Romane clasice", "Poezie modernă", "Genuri literare"],
   },
   {
-    subiectPrincipal: "Științe",
+    name: "Științe",
     subSubiecte: ["Biologie", "Fizică", "Chimie", "Astronomie"],
   },
   {
-    subiectPrincipal: "Matematică",
+    name: "Matematică",
     subSubiecte: ["Algebră", "Geometrie", "Analiză matematică"],
   },
   {
-    subiectPrincipal: "Informatică",
+    name: "Informatică",
     subSubiecte: ["Programare", "Rețele de calculatoare", "Baze de date"],
   },
   {
-    subiectPrincipal: "Limbi străine",
+    name: "Limbi străine",
     subSubiecte: [
       "Gramatică",
       "Vocabular",
@@ -29,7 +29,7 @@ export const subjects = [
     ],
   },
   {
-    subiectPrincipal: "Antropologie",
+    name: "Antropologie",
     subSubiecte: [
       "Cultura și societatea umană",
       "Istoria omenirii",
@@ -37,15 +37,15 @@ export const subjects = [
     ],
   },
   {
-    subiectPrincipal: "Psihiatrie",
+    name: "Psihiatrie",
     subSubiecte: ["Tulburări mintale", "Terapie", "Tratamente"],
   },
   {
-    subiectPrincipal: "Arte plastice",
+    name: "Arte plastice",
     subSubiecte: ["Pictură", "Sculptură", "Arhitectură", "Design interior"],
   },
   {
-    subiectPrincipal: "Muzică",
+    name: "Muzică",
     subSubiecte: [
       "Teorie și istorie a muzicii",
       "Instrumente muzicale",
@@ -53,27 +53,27 @@ export const subjects = [
     ],
   },
   {
-    subiectPrincipal: "Modele și design vestimentar",
+    name: "Modele și design vestimentar",
     subSubiecte: ["Moda", "Croitorie", "Design vestimentar"],
   },
   {
-    subiectPrincipal: "Dans",
+    name: "Dans",
     subSubiecte: ["Tipuri de dans", "Tehnici de dans", "Istoria dansului"],
   },
   {
-    subiectPrincipal: "Geologie",
+    name: "Geologie",
     subSubiecte: ["Istoria Pământului", "Forme de relief", "Roci și minerale"],
   },
   {
-    subiectPrincipal: "Filologie",
+    name: "Filologie",
     subSubiecte: ["Teoria literaturii", "Critica literară", "Studii culturale"],
   },
   {
-    subiectPrincipal: "Teologie",
+    name: "Teologie",
     subSubiecte: ["Istoria și teoria religiilor", "Doctrine", "Mitologie"],
   },
   {
-    subiectPrincipal: "Gândire critică",
+    name: "Gândire critică",
     subSubiecte: ["Raționament logic", "Analiză de argumente", "Dezbatere"],
   },
 ];
