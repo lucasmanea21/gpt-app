@@ -15,7 +15,7 @@ export const updatePoints = async (id: string, points: number) => {
   return { data, error };
 };
 
-export const createQuiz = async (quiz: Quiz, id: string) => {
+export const createQuiz = async (quiz: Quiz) => {
   console.log("createQuiz prop", quiz);
   const { data, error } = await supabase
     .from("quizzes")

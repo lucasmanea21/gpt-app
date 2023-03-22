@@ -1,22 +1,24 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import classNames from "classnames";
-import { subjects } from "../../data/subjects.js";
 import { useAtom } from "jotai";
 import { quizSubjectAtom } from "../../store/atom";
 
-const Chooser = () => {
+const Chooser = ({ items }: any) => {
   const [options, setOptions] = useState<any>([]);
   const [selected, setSelected] = useAtom(quizSubjectAtom);
 
+  console.log("items", items);
+  console.log("options", options);
   useEffect(() => {
-    setOptions(
-      subjects.map((item, index) => ({
-        value: item.subiectPrincipal,
-        label: item.subiectPrincipal,
-      }))
-    );
-  }, []);
+    items &&
+      setOptions(
+        items.map((item: any, index: any) => ({
+          value: item.name,
+          label: item.name,
+        }))
+      );
+  }, [items]);
 
   const customStyles = {
     option: (provided: any, state: any) => ({
@@ -26,7 +28,7 @@ const Chooser = () => {
     }),
   };
 
-  const customClassNames = {
+  const classNames = {
     option: classNames(
       "p-4", // Padding
       "hover:bg-blue-500", // Hover background color

@@ -150,7 +150,7 @@ const ChatInput = () => {
           }
         }}
       />
-      <Button customClassName="filled" onClick={(e: any) => onSubmit(e)}>
+      <Button className="filled" onClick={(e: any) => onSubmit(e)}>
         Submit
       </Button>
       {isLoading && <Generating />}

@@ -51,7 +51,7 @@ const QuizPage = () => {
             <h1 className="text-2xl font-bold">
               Ooops! You are not allowed to see this quiz.
             </h1>
-            <Button customClassName="filled mt-10" link="/">
+            <Button className="filled mt-10" link="/">
               Go to home
             </Button>
           </div>
