@@ -42,18 +42,18 @@ const ChatInput = () => {
 
     const run = async () => {
       let reply = ``;
-      try {
-        const eventSource = new EventSource(`${API_URL}/test`);
+      // try {
+      //   const eventSource = new EventSource(`${API_URL}/test`);
 
-        const filterQuestions = (message: any) => {
-          const questions = message
-            .split("Intrebari asemanatoare:")[1] // get questions part of string
-            .split(/\d+\./) // split questions by question number
-            .filter(Boolean) // remove empty strings
-            .map((q) => ({ intrebare: q.trim() })); // create array of objects with question property
+      //   // const filterQuestions = (message: any) => {
+      //   //   const questions = message
+      //   //     .split("Intrebari asemanatoare:")[1] // get questions part of string
+      //   //     .split(/\d+\./) // split questions by question number
+      //   //     .filter(Boolean) // remove empty strings
+      //   //     .map((q) => ({ intrebare: q.trim() })); // create array of objects with question property
 
-          console.log(questions);
-        };
+      //     // console.log(questions);
+      //   };
 
         const updateMessage = (message: any) => {
           if (message !== "[DONE]" && message !== `${prompt}`) {
