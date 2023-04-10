@@ -8,6 +8,7 @@ server/node-chatgpt-api/node_modules
 .pnp.js
 
 server
+/server
 
 # testing
 /coverage
