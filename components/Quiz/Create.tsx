@@ -35,8 +35,8 @@ const Create = () => {
 
     const res = quizString && (await createQuiz(eval(quizString)));
 
-    console.log("res", res.data);
-    res.data && handleCreated(res.data[0].id);
+    // console.log("res", res.data);
+    // res.data && handleCreated(res.data[0].id);
 
     console.log("quiz creation res", res);
 
