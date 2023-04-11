@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
-import classNames from "classnames";
+// import classNames from "classnames";
 import { useAtom } from "jotai";
 import { quizSubjectAtom } from "../../store/atom";
 
@@ -28,14 +28,14 @@ const Chooser = ({ items }: any) => {
     }),
   };
 
-  const classNames = {
-    option: classNames(
-      "p-4", // Padding
-      "hover:bg-blue-500", // Hover background color
-      "focus:bg-blue-500", // Focus background color
-      "focus:outline-none" // Remove default focus outline
-    ),
-  };
+  // const classNames = {
+  //   option: classNames(
+  //     "p-4", // Padding
+  //     "hover:bg-blue-500", // Hover background color
+  //     "focus:bg-blue-500", // Focus background color
+  //     "focus:outline-none" // Remove default focus outline
+  //   ),
+  // };
 
   return (
     <Select

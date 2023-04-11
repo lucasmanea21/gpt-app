@@ -1,3 +1,4 @@
+import axios from "axios";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
@@ -5,6 +6,7 @@ import { supabase } from "../../../pages/api/supabase-client";
 import Button from "../../Button";
 import CreateRoom from "./CreateRoom";
 import Room from "./Room";
+import { API_URL } from "../../../utils/config";
 
 const socket = io("http://localhost:8080");
 
@@ -34,21 +36,16 @@ const Live = () => {
   }, [socket]);
 
   useEffect(() => {
-    fetchRooms().then((data: any) => setRooms(data));
+    fetchRooms();
   }, []);
 
   console.log("rooms", rooms);
 
   // todo: change to hook
   const fetchRooms = async () => {
-    // fetch multiplayer quizzes from supabase
-    const { data, error } = await supabase
-      .from("multiplayer_quizzes")
-      .select("*")
-      .eq("isStarted", false)
-      .eq("isPublic", true);
-
-    return data;
+    let data = await axios.get(`${API_URL}/rooms/public`).then((res) => {
+      setRooms(res.data);
+    });
   };
 
   console.log("messageReceived", messageReceived);
