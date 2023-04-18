@@ -40,6 +40,7 @@ const Quiz = (data: any) => {
                 answers={questions[questionIndex]?.options}
                 correctAnswer={questions[questionIndex]?.correct}
                 isShowAnswer={questionIndex === 3}
+                quizData={data}
               />
             )
           ) : (
