@@ -10,6 +10,7 @@ const Quiz = () => {
   const router = useRouter();
   let id = router.query.id as string;
   const { quizInfo } = useGetQuizInfo(id);
+  console.log("quizInfo", quizInfo);
 
   const [isStarted, setIsStarted] = useState(false);
 
