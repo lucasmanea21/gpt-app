@@ -12,7 +12,7 @@ import { recommendedQuestions } from "../../data/questions";
 
 const InfoColumn = () => {
   return (
-    <div className="flex flex-col md:w-1/3 w-full space-y-3 mb-5">
+    <div className="flex flex-col w-full mb-5 space-y-3 md:w-1/3">
       <InfoCard />
       <InfoCard />
     </div>
@@ -45,7 +45,7 @@ const Chat = () => {
   return (
     <SectionWrapper className="bg-gray-800">
       <Card>
-        <p className="text-4xl font-semibold mb-2">Learn</p>
+        <p className="mb-2 text-4xl font-semibold">Learn</p>
         <p className="text-md">
           Invata punand intrebari legate de orice subiect.
         </p>
@@ -68,7 +68,7 @@ const Chat = () => {
             </>
           ) : (
             <div className="">
-              {/* <div className="flex md:space-x-6 flex-wrap w-2/3 justify-between">
+              {/* <div className="flex flex-wrap justify-between w-2/3 md:space-x-6">
                 <InfoColumn />
                 <InfoColumn />
               </div> */}
@@ -76,7 +76,7 @@ const Chat = () => {
                 {" "}
                 <p className="text-xl">Intrebari recomandate</p>
                 <div className="flex mt-3 space-x-5">
-                  {getRandomStrings().map((item, index) => (
+                  {randomStrings.map((item: any, index: any) => (
                     <Related
                       key={index}
                       text={item.intrebare}
@@ -88,7 +88,7 @@ const Chat = () => {
             </div>
           )}
         </div>
-        <ChatInput />
+        {/* <ChatInput /> */}
       </Card>
     </SectionWrapper>
   );

@@ -15,7 +15,7 @@ export const updatePoints = async (id: string, points: number) => {
   return { data, error };
 };
 
-export const createQuiz = async (quiz: Quiz, id: string) => {
+export const createQuiz = async (quiz: Quiz) => {
   console.log("createQuiz prop", quiz);
   const { data, error } = await supabase
     .from("quizzes")
@@ -47,4 +47,24 @@ export const getUsersByPoints = async () => {
     .order("points", { ascending: false });
 
   return { data, error };
+};
+
+export const fetchResponseCount = async ({
+  quizId,
+  step,
+}: {
+  quizId: string;
+  step: number;
+}) => {
+  const { data: responses, error } = await supabase
+    .from("responses")
+    .select("id", { count: "exact" })
+    .eq("quiz_id", quizId)
+    .eq("step", step);
+
+  if (error) {
+    console.error("Error fetching response count:", error);
+  } else {
+    return responses.length;
+  }
 };

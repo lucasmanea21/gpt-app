@@ -8,6 +8,9 @@ import {
   timeStartedAtom,
 } from "../../store/atom";
 import Button from "../Button";
+import axios from "axios";
+import { API_URL } from "../../utils/config";
+import { supabase } from "../../pages/api/supabase-client";
 
 const Answer = ({
   answer,
@@ -81,7 +84,7 @@ const Answered = ({
 
   return (
     <div className="flex flex-col items-center justify-center mt-4">
-      <div className="text-md mb-3">Raspunsul tau:</div>
+      {/* <div className="mb-3 text-md">Raspunsul tau:</div>
       <div>
         <Answer
           answer={givenAnswer}
@@ -90,17 +93,19 @@ const Answered = ({
           selected=""
           isPreview={true}
         />
-      </div>
+      </div> */}
 
       {isCorrect ? (
-        <div className="text-green-500">Correct</div>
+        <div className="px-2 py-1 my-3 bg-gradient-to-br animate-gradient from-green-500 to-green-700 rounded-xl">
+          Corect!
+        </div>
       ) : (
-        <div className="bg-gradient-to-br animate-gradient from-red-500 to-red-700 py-1 px-2 my-3 rounded-xl">
+        <div className="px-2 py-1 my-3 bg-gradient-to-br animate-gradient from-red-500 to-red-700 rounded-xl">
           Incorect
         </div>
       )}
 
-      {!isCorrect && <p className="text-md mb-3">Raspunsul corect: </p>}
+      {!isCorrect && <p className="mb-3 text-md">Raspunsul corect: </p>}
 
       <div>
         <Answer
@@ -113,7 +118,7 @@ const Answered = ({
       </div>
 
       <Button
-        customClassName="filled mt-5"
+        className="mt-5 filled"
         onClick={() => {
           if (questionIndex + 1 <= 3) {
             setAnswered(false);
@@ -132,34 +137,91 @@ const Question = ({
   answers,
   correctAnswer,
   isShowAnswer,
+  quizData,
 }: {
   question: string;
   answers: string[];
   correctAnswer: string;
   isShowAnswer: boolean;
+  quizData?: any;
 }) => {
   const [questionIndex, setQuestionIndex] = useAtom(questionsIndexAtom);
   const [, setTimeStarted] = useAtom(timeStartedAtom);
+  const { id: quizId, step } = quizData;
+
+  console.log("quizData", quizData);
 
   const [answered, setAnswered] = useState(false);
   const [selected, setSelected] = useState("a");
+  const [responseCount, setResponseCount] = useState(0);
 
-  console.log("correctAnswer", correctAnswer);
-
-  console.log("questionIndex", questionIndex);
   useEffect(() => {
     if (questionIndex === 0) {
       setTimeStarted(Date.now());
     }
   }, [questionIndex]);
 
+  const handleSubmitAnswer = async () => {
+    const res = axios
+      .post(`${API_URL}/quiz/response`, {
+        userId: "6e5931d6-74e4-4450-8ff6-acc5831b3f8f",
+        quizId: quizId,
+        step: questionIndex + 1,
+        answerId: selected,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
+
+  useEffect(() => {
+    const fetchResponseCount = async () => {
+      console.log("quizId,step", quizId, step);
+      const { data: responses, error } = await supabase
+        .from("responses")
+        .select("id", { count: "exact" })
+        .eq("quiz_id", quizId)
+        .eq("step", step);
+
+      if (error) {
+        console.error("Error fetching response count:", error);
+      } else {
+        setResponseCount(responses.length);
+      }
+    };
+
+    quizId && step && fetchResponseCount();
+
+    const subscription = supabase
+      .channel(`any`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "responses" },
+        () => {
+          setResponseCount((prevCount) => prevCount + 1);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
+  }, [quizId, step]);
+
+  console.log("quizId,step", quizId, step);
+
+  console.log("responseCount", responseCount);
+
   console.log("answered", answered);
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="text-xl mb-3">Question {questionIndex + 1}</div>
+      <div className="mb-3 text-xl">Question {questionIndex + 1}</div>
       <div className="flex flex-col items-center justify-center w-full">
-        <p className="text-3xl text-center mb-4">{question}</p>
+        <p className="mb-4 text-3xl text-center">{question}</p>
         {!answered ? (
           <>
             <div className="grid w-full grid-cols-2 gap-5 my-8">
@@ -177,10 +239,12 @@ const Question = ({
                   );
                 })}
             </div>
+            <div>{responseCount}/3 answered</div>
             <Button
-              customClassName="filled mt-5 text-xl"
+              className="mt-5 text-xl filled"
               onClick={() => {
                 setAnswered(true);
+                handleSubmitAnswer();
                 // if (questionIndex + 1 <= 2) {
                 //   setQuestionIndex(questionIndex + 1);
                 // }

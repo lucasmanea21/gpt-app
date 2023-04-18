@@ -14,6 +14,7 @@ import {
   userSessionAtom,
 } from "../../store/atom";
 import Button from "../Button";
+import BgCard from "../Cards/BgCard";
 
 const Final = ({ question }: { question: string }) => {
   const [userId] = useAtom(userSessionAtom);
@@ -49,24 +50,24 @@ const Final = ({ question }: { question: string }) => {
   console.log("timeElapsed", timeElapsed);
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-10">
+    <div className="bg-gray-800 p-8 rounded- flex flex-col items-center justify-center space-y-10">
       <div className="text-center">
         <p className="text-4xl font-bold">Quiz completat.</p>
         <p className="mt-3 text-md">
-          Ai terminat quizul despre {selected} in {/* @ts-ignore */}
-          {moment.duration(timeElapsed / 1000, "seconds").format("mm")}m:
+          Ai terminat quizul in {/* @ts-ignore */}
+          {moment.duration(timeElapsed / 1000, "seconds").format("mm")}:
           {/* @ts-ignore */}
-          {moment.duration(timeElapsed / 1000, "seconds").format("ss")}s
+          {moment.duration(timeElapsed / 1000, "seconds").format("ss")}
         </p>
       </div>
 
       <div className="p-5 text-2xl bg-stone-800 rounded-xl">
-        {correctAnswers}/3 intrebari corecte
+        3/3 intrebari corecte
       </div>
       <div className="flex space-x-3 font-semibold">
         <div className="flex items-center justify-center p-2 px-4 space-x-2 cursor-pointer rounded-2xl bg-gradient-to-br animate-gradient from-blue-500 to-purple-700">
           <BsStars />
-          <p>+523 puncte</p>
+          <p>+20 puncte</p>
         </div>
         <div className="flex items-center justify-center p-2 px-4 space-x-2 cursor-pointer rounded-2xl bg-gradient-to-br animate-gradient from-red-500 to-yellow-600">
           <MdQuiz />
@@ -75,7 +76,7 @@ const Final = ({ question }: { question: string }) => {
       </div>
 
       <div>
-        <Button customClassName="filled" link="/quiz/create">
+        <Button className="filled" link="/quiz/create">
           Creaza alt quiz
         </Button>
       </div>

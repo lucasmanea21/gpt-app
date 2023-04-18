@@ -5,7 +5,7 @@ interface ButtonProps {
   label?: string;
   newTab?: boolean;
   link?: string;
-  customClassName?: string;
+  className?: string;
   children?: any;
 }
 
@@ -14,7 +14,7 @@ const Button = ({
   label,
   newTab,
   link,
-  customClassName,
+  className,
   children,
 }: ButtonProps) => {
   return (
@@ -23,7 +23,7 @@ const Button = ({
       target={newTab ? "_blank" : ""}
       rel="noreferrer"
       onClick={onClick}
-      className={`btn ${customClassName} `}
+      className={`btn ${className} `}
     >
       {children}
     </a>

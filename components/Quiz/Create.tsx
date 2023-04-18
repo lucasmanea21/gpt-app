@@ -10,9 +10,12 @@ import Card from "../Cards";
 import BgCard from "../Cards/BgCard";
 import Chooser from "./Chooser";
 import Loading from "./Loading";
+import { subjects } from "../../data/subjects.js";
+import { useRouter } from "next/router";
 
 const Create = () => {
   const [quizResponse, setQuizResponse] = useState(``);
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useAtom(isQuizLoadingAtom);
   const [selected] = useAtom(quizSubjectAtom);
@@ -20,117 +23,38 @@ const Create = () => {
 
   console.log("quizResponse", quizResponse);
 
-  const processResponse2 = async (response: string) => {
-    const matches = response.match(/```([\s\S]*?)```/);
-
-    console.log("matches", matches);
-
-    // Check if a match was found
-
-    const quizString = matches && matches[1];
-    console.log(quizString); // Output: "asdasds"
-
-    const res = quizString && (await createQuiz(eval(quizString)));
-
-    console.log("res", res.data);
-    res.data && handleCreated(res.data[0].id);
-
-    console.log("quiz creation res", res);
-
-    // console.log("response.split()", setQuizResponse(response.split("```")[1]));
-  };
-
-  const processResponse = (response: string) => {
-    const questions = [];
-
-    const lines = response.split("\n");
-
-    let currentQuestion = {
-      intrebare: "",
-      raspunsuri: [],
-      raspunsCorect: "",
-    };
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-
-      if (line.startsWith("Intrebar")) {
-        // Adaugam un nou obiect la array-ul de intrebari si setam campul "Intrebare"
-        currentQuestion = {
-          intrebare: line.substring(11),
-          raspunsuri: [],
-          raspunsCorect: "",
-        };
-        questions.push(currentQuestion);
-      } else if (line.startsWith("a) ")) {
-        // Adaugam raspunsul la campul "Raspunsuri" al ultimei intrebari adaugate
-        const answerIndex = line[0].charCodeAt(0) - "a".charCodeAt(0);
-        //@ts-ignore
-        currentQuestion.raspunsuri[answerIndex] = line.substring(3);
-
-        // Verificam daca acesta este raspunsul corect
-        if (line.includes("Răspunsul corect:")) {
-          //@ts-ignore
-          currentQuestion.raspunsCorect = String.fromCharCode(
-            "a".charCodeAt(0) + answerIndex
-          );
-        }
-      }
-    }
-    console.log("questions", questions);
-  };
-
-  //   const response = `Desigur, iată un quiz cu trei întrebări din domeniul istoriei:
-
-  //  \```[
-  //     ({
-  //       intrebare: "Când a avut loc Marea Schismă din Biserica Catolică?",
-  //       raspunsuri: ["a. 1054", "b. 1215", "c. 1378", "d. 1517"],
-  //       raspunsCorect: "a",
-  //     },
-  //     {
-  //       intrebare: "Când a avut loc Revoluția Franceză?",
-  //       raspunsuri: [
-  //         "a. 1789-1799",
-  //         "b. 1815-1825",
-  //         "c. 1848-1849",
-  //         "d. 1914-1918",
-  //       ],
-  //       raspunsCorect: "a",
-  //     },
-  //     {
-  //       intrebare: "Cine a fost primul împărat roman?",
-  //       raspunsuri: ["a. Augustus", "b. Julius Caesar", "c. Nero", "d. Traian"],
-  //       raspunsCorect: "a",
-  //     })
-  //   ]\```
-
-  //   Sper că acest quiz este util! Dacă aveți nevoie de mai multe întrebări sau de un quiz din alt domeniu, vă stau la dispoziție să mă întrebați.`;
-  // processResponse(response);
-  // processResponse2(response);
-
-  const GPTCall = async (prompt: string) => {
+  const createRoom = async (subject: string, creatorUserId: string) => {
     try {
-      const res = await axios.post(`${API_URL}/chat`, {
-        prompt: prompt,
-        type: "quiz",
+      const response = await axios.post(`${API_URL}/rooms/create`, {
+        subject,
+        creatorUserId,
       });
 
-      res && setQuizResponse(res.data.response);
-      !res.data.response && setFailed(true);
-      res && setIsLoading(false);
-    } catch (error) {
-      console.log("error", error);
+      return response.data.id;
+    } catch (error: any) {
+      console.error(error.message);
+
+      return error.message;
     }
   };
 
-  useEffect(() => {
-    quizResponse && processResponse2(quizResponse);
-  }, [quizResponse]);
+  const handleCreateQuiz = async () => {
+    const creatorUserId = ""; // Get the current user's ID
+
+    const roomId = await createRoom("literatura", creatorUserId);
+    console.log("roomId", roomId);
+    if (roomId) {
+      // Redirect the user to the created room, or update the UI accordingly
+      router.push(`/live/${roomId}`);
+    } else {
+      // Show an error message to the user
+      setFailed(true);
+    }
+  };
 
   const handleCreate = () => {
     setIsLoading(true);
-    GPTCall(selected);
+    handleCreateQuiz();
   };
 
   const handleCreated = (id: string) => {
@@ -151,20 +75,53 @@ const Create = () => {
               🤩
             </p>
           </div>
-          <div className="my-7 space-y-5">
+          <div className="space-y-5 my-7">
             <div>
               <p className="mb-2 text-xl">Subiectul quizului</p>
 
-              <Chooser />
+              <Chooser items={subjects} />
+            </div>
+            <div className="flex justify-between w-full space-x-4">
+              <div className="w-1/2">
+                {/* Type of quiz: short, medium, long */}
+                <p className="mb-2 text-xl">Type of quiz</p>
+                <Chooser
+                  items={[
+                    { name: "Short: 3 questions" },
+                    { name: "Medium: 5 questions" },
+                    { name: "Long: 10 questions" },
+                  ]}
+                />
+              </div>
+              <div className="w-1/2">
+                {/* Difficulty: easy, medium, hard  */}
+                <p className="mb-2 text-xl">Difficulty</p>
+                <input
+                  className="block w-full px-4 py-2 leading-normal bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:shadow-outline"
+                  type="number"
+                  min="1"
+                  max="10"
+                />
+              </div>
+            </div>
+            <div>
+              {/* is public check */}
+              <p className="mb-2 text-xl">Let others join</p>
+              <label>
+                <input
+                  className="block w-full px-4 py-2 leading-normal bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:shadow-outline"
+                  type="checkbox"
+                  // checked={isChecked}
+                  // onChange={handleCheckboxChange}
+                />
+                Checkbox Label
+              </label>
             </div>
             {/* <div>
               <p className="text-xl">Perioada quizului</p>
             </div> */}
           </div>
-          <Button
-            customClassName="filled text-md "
-            onClick={() => handleCreate()}
-          >
+          <Button className="filled text-md " onClick={() => handleCreate()}>
             Creeaza
           </Button>{" "}
         </>
