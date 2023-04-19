@@ -7,7 +7,7 @@ import SectionWrapper from "../../components/Wrappers";
 import useGetUserData from "../../hooks/useGetUserData";
 import { userInfoAtom } from "../../store/atom";
 import useTimeUntil from "../../utils/useTimeUntil";
-import { getQuiz } from "../api/supabase-client";
+import { getQuiz } from "../api/supabase/supabase-client";
 
 const QuizPage = () => {
   useGetUserData();

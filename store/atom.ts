@@ -23,3 +23,5 @@ export const timeFinishedAtom = atom(0);
 export const correctAnswersAtom = atom(0);
 
 export const quizInfoAtom = atom<any>([]);
+
+export const stepAtom = atom(1);
