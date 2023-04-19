@@ -6,7 +6,7 @@ import styles from "../styles/Home.module.css";
 
 import Profile from "../components/Profile/Profile";
 import Navbar from "../components/Navbar";
-import { createQuiz, supabase } from "./api/supabase-client";
+import { createQuiz, supabase } from "./api/supabase/supabase-client";
 import { useAtom } from "jotai";
 import { userInfoAtom, userSessionAtom } from "../store/atom";
 import useGetUserData from "../hooks/useGetUserData";
@@ -14,12 +14,19 @@ import Chat from "../components/Chat";
 import { Quiz } from "../types";
 import Welcome from "../components/Welcome";
 import SectionWrapper from "../components/Wrappers";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const [userInfo, setUserInfo] = useAtom(userInfoAtom);
   const [session] = useAtom(userSessionAtom);
 
   useGetUserData();
+
+  useEffect(() => {
+    // todo: change this?
+    router.push("/live");
+  }, [router]);
 
   const handleCreateQuiz = async (userId: any) => {
     const quiz: Quiz = {

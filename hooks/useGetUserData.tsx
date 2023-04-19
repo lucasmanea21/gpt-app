@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import React, { useEffect } from "react";
-import { supabase } from "../pages/api/supabase-client";
+import { supabase } from "../pages/api/supabase/supabase-client";
 import { userInfoAtom, userSessionAtom } from "../store/atom";
 
 const useGetUserData = () => {

@@ -5,7 +5,7 @@ import { userInfoAtom, userSessionAtom } from "../../store/atom";
 import Button from "../Button";
 import { BsFillLightbulbFill, BsTrophyFill } from "react-icons/bs";
 import { MdQuiz } from "react-icons/md";
-import { supabase } from "../../pages/api/supabase-client";
+import { supabase } from "../../pages/api/supabase/supabase-client";
 import Card from "../Cards";
 import { BsStars } from "react-icons/bs";
 import { FaBrain, FaUserAlt } from "react-icons/fa";

@@ -2,7 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
-import { supabase } from "../../../pages/api/supabase-client";
+import { supabase } from "../../../pages/api/supabase/supabase-client";
 import Button from "../../Button";
 import CreateRoom from "./CreateRoom";
 import Room from "./Room";
@@ -83,9 +83,9 @@ const Live = () => {
           <p className="text-3xl">Quizzes</p>
           <div className="flex flex-wrap w-full">
             <CreateRoom />
-            <Room />
-            <Room />
-            <Room />
+            <Room isPreview />
+            <Room isPreview />
+            <Room isPreview />
           </div>
         </div>
       </Link>

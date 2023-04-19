@@ -1,7 +1,7 @@
 import React from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { supabase } from "./api/supabase-client";
+import { supabase } from "./api/supabase/supabase-client";
 import Navbar from "../components/Navbar";
 import SectionWrapper from "../components/Wrappers";
 import useGetUserData from "../hooks/useGetUserData";

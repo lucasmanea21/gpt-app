@@ -2,8 +2,12 @@ import axios from "axios";
 import { create } from "domain";
 import { useAtom } from "jotai";
 import { useState, useEffect } from "react";
-import { createQuiz } from "../../pages/api/supabase-client";
-import { isQuizLoadingAtom, quizSubjectAtom } from "../../store/atom";
+import { createQuiz } from "../../pages/api/supabase/supabase-client";
+import {
+  isQuizLoadingAtom,
+  quizSubjectAtom,
+  userSessionAtom,
+} from "../../store/atom";
 import { API_URL } from "../../utils/config";
 import Button from "../Button";
 import Card from "../Cards";
@@ -12,37 +16,24 @@ import Chooser from "./Chooser";
 import Loading from "./Loading";
 import { subjects } from "../../data/subjects.js";
 import { useRouter } from "next/router";
+import { createRoom } from "../../pages/api/supabase/handles";
 
 const Create = () => {
-  const [quizResponse, setQuizResponse] = useState(``);
   const router = useRouter();
 
+  const [session] = useAtom(userSessionAtom);
   const [isLoading, setIsLoading] = useAtom(isQuizLoadingAtom);
   const [selected] = useAtom(quizSubjectAtom);
+
+  const [quizResponse, setQuizResponse] = useState(``);
   const [failed, setFailed] = useState(false);
 
   console.log("quizResponse", quizResponse);
 
-  const createRoom = async (subject: string, creatorUserId: string) => {
-    try {
-      const response = await axios.post(`${API_URL}/rooms/create`, {
-        subject,
-        creatorUserId,
-      });
-
-      return response.data.id;
-    } catch (error: any) {
-      console.error(error.message);
-
-      return error.message;
-    }
-  };
-
   const handleCreateQuiz = async () => {
-    const creatorUserId = ""; // Get the current user's ID
+    const ownerId = session.user.id; // Get the current user's ID
+    const roomId = await createRoom("literatura", ownerId);
 
-    const roomId = await createRoom("literatura", creatorUserId);
-    console.log("roomId", roomId);
     if (roomId) {
       // Redirect the user to the created room, or update the UI accordingly
       router.push(`/live/${roomId}`);
@@ -56,13 +47,6 @@ const Create = () => {
     setIsLoading(true);
     handleCreateQuiz();
   };
-
-  const handleCreated = (id: string) => {
-    //redirect to quiz
-    window.location.href = `/quiz/${id}`;
-  };
-
-  console.log("isLoading, quizResponse", isLoading, quizResponse);
 
   return (
     <BgCard>

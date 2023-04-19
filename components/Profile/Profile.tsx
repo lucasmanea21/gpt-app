@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { supabase } from "../../pages/api/supabase-client";
+import { supabase } from "../../pages/api/supabase/supabase-client";
 import Card from "../Cards";
 import Input from "../Input";
 import { useForm } from "react-hook-form";

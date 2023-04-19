@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { supabase } from "../../pages/api/supabase-client";
+import { supabase } from "../../pages/api/supabase/supabase-client";
 
 const Input = ({ session }: any) => {
   const [input, setInput] = useState("");

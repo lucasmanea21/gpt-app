@@ -5,12 +5,15 @@ import {
   correctAnswersAtom,
   questionsAtom,
   questionsIndexAtom,
+  stepAtom,
   timeStartedAtom,
 } from "../../store/atom";
 import Button from "../Button";
 import axios from "axios";
 import { API_URL } from "../../utils/config";
-import { supabase } from "../../pages/api/supabase-client";
+import { supabase } from "../../pages/api/supabase/supabase-client";
+import { fetchResponseCount } from "../../pages/api/supabase/fetches";
+import { handleStepIncrement } from "../../pages/api/supabase/handles";
 
 const Answer = ({
   answer,
@@ -62,15 +65,13 @@ const Answered = ({
 
   console.log("answers", answers);
 
+  const handleNext = async () => {};
+
   useEffect(() => {
     questions &&
       questionIndex &&
       setGivenAnswer(answers[answersLetters.indexOf(answer)]);
   }, [questions, questionIndex]);
-
-  console.log("givenAnswer", givenAnswer);
-
-  console.log("givenAnswer", givenAnswer);
 
   useEffect(() => {
     const isCorrectAnswer = answer === correctAnswer;
@@ -105,9 +106,9 @@ const Answered = ({
         </div>
       )}
 
-      {!isCorrect && <p className="mb-3 text-md">Raspunsul corect: </p>}
+      {/* {!isCorrect && <p className="mb-3 text-md">Raspunsul corect: </p>} */}
 
-      <div>
+      {/* <div>
         <Answer
           answer={answers[answersLetters.indexOf(correctAnswer)]}
           keyIndex={1}
@@ -115,7 +116,7 @@ const Answered = ({
           selected=""
           isPreview={true}
         />
-      </div>
+      </div> */}
 
       <Button
         className="mt-5 filled"
@@ -147,7 +148,9 @@ const Question = ({
 }) => {
   const [questionIndex, setQuestionIndex] = useAtom(questionsIndexAtom);
   const [, setTimeStarted] = useAtom(timeStartedAtom);
-  const { id: quizId, step } = quizData;
+  const { id: quizId, step: stepData } = quizData;
+
+  const [step, setStep] = useAtom(stepAtom);
 
   console.log("quizData", quizData);
 
@@ -170,7 +173,7 @@ const Question = ({
         answerId: selected,
       })
       .then((res) => {
-        console.log(res);
+        handleStepIncrement(quizId, setStep);
       })
       .catch((err) => {
         console.log("err", err);
@@ -178,22 +181,7 @@ const Question = ({
   };
 
   useEffect(() => {
-    const fetchResponseCount = async () => {
-      console.log("quizId,step", quizId, step);
-      const { data: responses, error } = await supabase
-        .from("responses")
-        .select("id", { count: "exact" })
-        .eq("quiz_id", quizId)
-        .eq("step", step);
-
-      if (error) {
-        console.error("Error fetching response count:", error);
-      } else {
-        setResponseCount(responses.length);
-      }
-    };
-
-    quizId && step && fetchResponseCount();
+    quizId && step && fetchResponseCount({ quizId, step, setResponseCount });
 
     const subscription = supabase
       .channel(`any`)
@@ -245,9 +233,6 @@ const Question = ({
               onClick={() => {
                 setAnswered(true);
                 handleSubmitAnswer();
-                // if (questionIndex + 1 <= 2) {
-                //   setQuestionIndex(questionIndex + 1);
-                // }
               }}
             >
               Submit

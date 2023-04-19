@@ -5,7 +5,7 @@ import momentDurationFormatSetup from "moment-duration-format";
 import { useEffect, useState } from "react";
 import { BsStars } from "react-icons/bs";
 import { MdQuiz } from "react-icons/md";
-import { updatePoints } from "../../pages/api/supabase-client";
+import { updatePoints } from "../../pages/api/supabase/supabase-client";
 import {
   correctAnswersAtom,
   quizSubjectAtom,

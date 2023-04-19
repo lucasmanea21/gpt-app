@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getQuiz, getUsersByPoints } from "../../pages/api/supabase-client";
+import {
+  getQuiz,
+  getUsersByPoints,
+} from "../../pages/api/supabase/supabase-client";
 import { LeaderboardUser } from "../../types";
 import Card from "../Cards";
 import Item from "./Item";

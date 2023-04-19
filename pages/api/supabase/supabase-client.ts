@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { Quiz } from "../../types";
+import { Quiz } from "../../../types";
 
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",

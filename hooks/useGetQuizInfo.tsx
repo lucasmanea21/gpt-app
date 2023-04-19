@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { supabase } from "../pages/api/supabase-client";
+import { supabase } from "../pages/api/supabase/supabase-client";
 
 const useGetQuizInfo = (id: string) => {
   const [quizInfo, setQuizInfo] = useState<any>([]);
